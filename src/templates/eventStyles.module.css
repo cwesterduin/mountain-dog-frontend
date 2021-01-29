@@ -1,0 +1,247 @@
+.content_top {
+  background: #fffffe;
+  padding: 1em;
+  margin: 2em -1em 1em -1em;
+  border: .1em solid rgba(14,30,37,.054);
+}
+
+.tag {
+  z-index: 999;
+  font-size: 1.2em;
+  font-weight: 100;
+  color: #222;
+  font-family: "Anton", Charcoal, sans-serif;
+  letter-spacing: .06em;
+  transform: rotate(-22deg);
+  background: #fff;
+  border: solid .1em #222;
+  padding: 0.2em;
+  position:absolute;
+}
+
+.details_title {
+  padding: 0 0 .5em 0;
+}
+
+.details_title_heading {
+  display: inline-block;
+  padding-right: 0.5em;
+}
+
+
+.details_cont {
+  height: auto;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.details_numbers {
+  padding: .5em 0 1em 0
+}
+
+.details_mobile {
+  display: none;
+}
+
+.trip_context {
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  flex: 1;
+  justify-content:flex-end;
+}
+
+  @media only screen and (max-width: 48em) {
+    .details {
+      display: none;
+    }
+    .trip_context {
+      display: none
+    }
+    .details_mobile {
+      display: block;
+      padding: 1.5em 0 0 0;
+      line-height: 1.5;
+      width: 100%;
+      margin: 0 auto
+    }
+    .details_cont {
+      flex-direction: column-reverse;
+    }
+    .details_title {
+      text-align: center;
+      line-height: 1.5
+    }
+    .details_title_heading {
+      display: block;
+    }
+    .content_top {
+      margin: 2em 0em 1em 0em;
+      border: none;
+      background: none;
+    }
+}
+
+.map_sub_cont  {
+  display: flex;
+  justify-content: center;
+}
+
+.description_cont {
+  padding: 0 1em 1em 1em;
+  margin: 0 0 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.deadLink {
+  color: #3760df;
+  opacity: 0.5
+}
+
+.image_title {
+  background: #fffffe;
+  padding: 1em;
+  border: .1em solid rgba(14,30,37,.054);
+  border-radius: 15px;
+  text-align: center;
+}
+
+.imageTopCont {
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+  justify-content: space-between;
+
+}
+
+.image_big_cont, .image_big_cont_video  {
+  width: calc(47.5%);
+  margin: 1em 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.image_big_contB {
+  width: calc(47.5%);
+  margin: 1em 0;
+  box-sizing: border-box;
+  position: relative;
+  align-self: center;
+}
+
+.image_big_cont {
+  align-self: center;
+}
+
+.image_big_cont_video {
+  align-self: auto;
+  width: 100%;
+}
+
+.image_big_cont > div {
+  position:relative;
+  text-align: center;
+  width: 100%;
+  background: #fffffe;
+  border: .1em solid rgba(14,30,37,.054);
+  border-radius: 0;
+}
+
+.image_big_cont_description {
+  color: black;
+  background: #fffffe !important;
+  min-height: 1em;
+  border-radius: 0 0 5px 5px !important;
+  border-top: none !important;
+
+}
+
+.imageCont {
+  width: 100%;
+}
+
+.imageCont * {
+  width:100%;
+}
+
+.video_cont {
+  width: 100%;
+  height: 0;
+  padding-bottom: 80%;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: calc(35vw - 2em);
+    border: .1em solid rgba(14,30,37,.054);
+    background: #fffffe;
+}
+
+@media only screen and (max-width: 48em) {
+  .image_big_cont, .image_big_cont_video, .image_big_contB {
+    width: 100%;
+    margin: 1em auto
+  }
+  .image_big_cont > div, .video {
+    border: none;
+    border-top: .1em solid rgba(14,30,37,.054);
+    border-bottom: .1em solid rgba(14,30,37,.054);
+  }
+  .video {
+    max-height: calc(80vw - 2em)
+  }
+}
+
+@media only screen and (max-width: 30em) {
+  .imageTopCont {
+  }
+  .image_big_cont, .image_big_cont_video, .image_big_contB {
+    width: 100%;
+    margin: 1em auto
+  }
+  .image_big_cont > div, .video {
+    border: none;
+    border-top: .1em solid rgba(14,30,37,.054);
+    border-bottom: .1em solid rgba(14,30,37,.054);
+  }
+  .video {
+    max-height: calc(80vw - 2em)
+  }
+  .image_big_cont_description {
+    line-height: 2;
+    min-height: 2em;
+    padding: 0 .5em;
+  }
+  .comment_cont {
+    padding: 0 .5em
+  }
+}
+
+.munro_item::after {
+  content: ", "
+}
+
+.munro_item:nth-last-of-type(2)::after {
+  content: " and "
+}
+
+.munro_item:last-of-type::after {
+  content: "."
+}
+
+.event_numbers{
+  padding: .2em;
+}
+.event_numbers:last-of-type {
+  padding-right:0
+}
+.event_numbers:first-of-type {
+  padding-left:0;
+}

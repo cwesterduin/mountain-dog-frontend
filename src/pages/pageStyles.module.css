@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+.content {
+  padding: 0 5%;
+  position:relative;
+  margin: 0 auto 0 auto;
+}
+
+.index_content {
+  width: 80%;
+  margin: -8em auto 0 auto
+}
+
+.content_map {
+  padding: 0
+}
+
+@media only screen and (max-width: 64em) {
+  .content {
+    padding: 0 2.5%;
+  }
+  .index_content {
+    width: 90%
+  }
+}
+
+  @media only screen and (max-width: 30em) {
+    .content {
+      padding: 0 0;
+    }
+    .index_content {
+      width: 100%;
+      margin-top: -6em;
+    }
+    .text_block > div > p, .text_block > div > h1  {
+      padding: 0 1em;
+    }
+  }

@@ -1,0 +1,82 @@
+.fold {
+  height: calc(100% - 4em);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 0%;
+  overflow: hidden;
+  padding-top: 1em;
+}
+
+.fold_upper {
+  height: 3em;
+}
+
+.fold_upper>h2 {
+  padding:0;
+  margin: 0
+}
+
+.container {
+  flex: 1;
+  background: black;
+  padding: 0 0;
+  position: relative;
+  overflow:hidden;
+}
+
+.container * {
+  height: 100%;
+  width: 100%;
+}
+
+
+.control_button {
+  height: 48px;
+  width: 48px;
+  position:absolute;
+  z-index: 99
+}
+
+.button_back, .button_next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.button_next {
+  right: 0;
+}
+.button_fullscreen {
+  right: 0;
+}
+
+.thumbnail_cont {
+  width: 100%;
+  height: 4em;
+  display:flex;
+  flex-flow: row nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: -4em
+}
+
+
+.thumbnail_inner_cont {
+  padding: 0;
+  max-width: 4em;
+  min-width: 4em;
+  max-height: 4em;
+  min-width: 4em;
+  border:solid transparent calc(0.1em);
+  border-radius: 15px;
+
+}
+
+.thumbnail_inner_cont:hover {
+}
+
+.thumbnail_inner_cont * {
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+
+}
