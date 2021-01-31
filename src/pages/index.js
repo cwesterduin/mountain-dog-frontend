@@ -22,7 +22,7 @@ export default function Home() {
           objectFit: "cover",
           objectPosition: "40% 35%"
       }}
-      filename={'favourites/test.png'}
+      filename={'Favourites/test.png'}
     />
     </div>
     </div>
