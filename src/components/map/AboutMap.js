@@ -78,14 +78,15 @@ function Setter(props) {
   const { map } = useLeaflet();
 
   useEffect(() => {
-  if (props.gpx === 'false') {
-    let originLat = props.mapItems[0].Lat
-    let originLng = props.mapItems[0].Lng
+  if (props.gpx == 'false' || props.gpx.length <= 2) {
     let originLatTopLeft = [props.mapItems[0].Lat - 0.005, props.mapItems[0].Lng - 0.005]
     let originLatBottomRight = [props.mapItems[0].Lat + 0.005, props.mapItems[0].Lng + 0.005]
-    console.log(origin)
-    map.fitBounds([originLatTopLeft,originLatBottomRight])
-  }
+    let originBounds = [
+      originLatTopLeft,
+      originLatBottomRight
+    ]
+    map.fitBounds(originBounds)
+  } 
   else {
     map.fitBounds(props.gpx)
   }

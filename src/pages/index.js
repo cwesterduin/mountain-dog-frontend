@@ -48,7 +48,7 @@ export default function Home() {
               <p>And enjoy Alfie’s <Link to={"/events/top"}>Favourites page</Link> to see the adventures that we have had along the way.</p>
 
                 <div Style={"margin:0 auto; min-width: 80%"} className={eventStyles.image_big_cont}>
-                  <GridImage Path={'favourites/Alfie_Portrait.jpeg'} />
+                  <GridImage Path={'Favourites/Alfie_Portrait.jpeg'} />
                 </div>
                 <p Style={"text-align:center; margin:1em 0 "}>Alfie's portrait</p>
             </div>

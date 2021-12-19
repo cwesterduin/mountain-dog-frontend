@@ -2,7 +2,7 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`
 });
 
-let eventTypes = ['Munro','Swim','Kayak','Bike','Walk']
+let eventTypes = ['Munro','Corbett','Swim','Kayak','Bike','Walk']
 
 const fetch = require('node-fetch')
 const getEventsData = async () => {
@@ -63,6 +63,7 @@ exports.createPages = async ({
   });
   eventTypes.forEach((type,index) => {
     let item = events.filter(a => a.DescriptionID.startsWith(type)).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+    console.log(item)
     createPage({
       path: `/events/${type.toLowerCase()}`,
       component: require.resolve('./src/templates/subEvent.js'),

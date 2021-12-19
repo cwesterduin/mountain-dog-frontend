@@ -26,7 +26,7 @@ function CheckBox(props) {
 function CheckBoxes(props) {
   const [minimized, setMinimized] = useState(false)
 
-  const featureTypes = ['munro','munroX','walk','bike','swim','kayak','view','misc']
+  const featureTypes = ['munro','corbett','walk','bike','swim','kayak','view','misc']
   const checkBoxes = featureTypes.map(feature =>
                     <CheckBox feature={feature} tryChange={props.tryChange}/>
                 )
