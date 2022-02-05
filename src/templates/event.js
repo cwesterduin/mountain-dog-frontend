@@ -59,7 +59,9 @@ function Event({pageContext: {item}}) {
     config: { identifier: id },
   }
 
-  const [gpx, setGpx] = useState(JSON.parse(item.GPX))
+  console.log(item)
+
+  const [gpx, setGpx] = useState(item.GPX ? JSON.parse(item.GPX) : null)
 
   useEffect(() => {
   fetch(`https://fathomless-reaches-05046.herokuapp.com/Events/${item.EventID}`)
