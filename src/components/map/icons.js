@@ -1,14 +1,12 @@
 import L from 'leaflet'
 
 import munroIcon from '../../../static/munro.svg'
-import munroXIcon from '../../../static/munroX.svg'
+import corbettIcon from '../../../static/corbett.svg'
 import bikeIcon from '../../../static/bike.svg'
 import swimIcon from '../../../static/swim.svg'
 import walkIcon from '../../../static/walk.svg'
 import kayakIcon from '../../../static/kayak.svg'
 import viewIcon from '../../../static/view.svg'
-
-
 
 // Init custom map icons
 let icons = {}
@@ -20,9 +18,9 @@ let icons = {}
     iconSize: [16,16],
     iconAnchor: [8,16],
   })
-    icons.munroX = new L.Icon({
-    iconUrl: munroXIcon,
-    iconRetinaUrl: munroXIcon,
+    icons.corbett = new L.Icon({
+    iconUrl: corbettIcon,
+    iconRetinaUrl: corbettIcon,
     popupAnchor: [0, -16],
     iconSize: [16,16],
     iconAnchor: [8,16],
@@ -82,7 +80,7 @@ let icons = {}
 // Init key icons
 let keyIcons = {}
     keyIcons.munro = munroIcon
-    keyIcons.munroX = munroXIcon
+    keyIcons.corbett = corbettIcon
     keyIcons.bike = bikeIcon
     keyIcons.swim = swimIcon
     keyIcons.walk = walkIcon

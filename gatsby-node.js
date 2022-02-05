@@ -6,36 +6,53 @@ let eventTypes = ['Munro','Corbett','Swim','Kayak','Bike','Walk']
 
 const fetch = require('node-fetch')
 const getEventsData = async () => {
-  console.log(process.env.API_URL);
   return fetch("https://fathomless-reaches-05046.herokuapp.com/Events")
   .then(res => res.json())
 };
 const getTripsData = async () => {
-  console.log(process.env.API_URL);
   return fetch("https://fathomless-reaches-05046.herokuapp.com/Trips")
   .then(res => res.json())
 };
 const getBlogsData = async () => {
-  console.log(process.env.API_URL);
   return fetch("https://fathomless-reaches-05046.herokuapp.com/BlogPosts")
   .then(res => res.json())
 };
 
 const getMediaDate = async () => {
-  console.log(process.env.API_URL);
   return fetch("https://fathomless-reaches-05046.herokuapp.com/MediaDate")
   .then(res => res.json())
 };
 
+const mapFeatures = async () => {
+  return fetch("https://fathomless-reaches-05046.herokuapp.com/mapFeatures")
+  .then(res => res.json())
+};
 
+const eventMapFeatures = async () => {
+  return fetch("https://fathomless-reaches-05046.herokuapp.com/EventMapFeatures")
+  .then(res => res.json())
+};
 
 exports.createPages = async ({
   actions: {
     createPage
   }
 }) => {
+  const mf = await mapFeatures()
+  const emf  = await eventMapFeatures()
+  createPage({
+    path: `/map`,
+    component: require.resolve('./src/templates/mapPage.js'),
+    context: {
+     mf,
+     emf
+    }
+  }
+  );
+
   //create a page for each event
   let events = await getEventsData();
+
   events = events.results;
   // Create a page for each painting.
   events.forEach((item,index) => {
@@ -82,7 +99,7 @@ exports.createPages = async ({
       filterTrips
     }
   });
-  let topID = [113,11,53,92,96,103,109,120]
+  let topID = [113,11,105,80,92,96,103,109,120]
   let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
   createPage({
     path: `/events/top`,

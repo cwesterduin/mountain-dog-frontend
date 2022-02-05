@@ -71,13 +71,14 @@ function PointsLayer(props) {
 
 
 function LeafletMap(props) {
+  const items = props.items
+  const extraItems = props.extraItems
   const mapContext = useContext(myContext);
 
 
   const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
-  const [extraItems, setExtraItems] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(true);
+
 
   const [mapItems, setMapItems] = useState([])
   const [filter, setFilter] = useState([]);
@@ -95,34 +96,7 @@ function LeafletMap(props) {
 
 
 
-  useEffect(() => {
-  fetch("https://fathomless-reaches-05046.herokuapp.com/mapFeatures")
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setIsLoaded(true);
-        setItems(result.results);
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      }
-    )
-  }, [])
-  useEffect(() => {
-  fetch("https://fathomless-reaches-05046.herokuapp.com/EventMapFeatures")
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setIsLoaded(true);
-        setExtraItems(result.results);
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      }
-    )
-  }, [])
+
 
   function tryChange(e) {
     if (mapContext.referringFilter.indexOf(e) === -1) {
