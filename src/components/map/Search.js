@@ -80,7 +80,6 @@ function Search(props) {
       setHidden(false)
     }
     else {
-      console.log(e.relatedTarget.className)
       setHidden(true)
     }
   }
@@ -91,7 +90,6 @@ function Search(props) {
     setFeatureSearch("")
     setHidden(true)
     props.onItemClick(e)
-    console.log(e)
   }
 
   return (

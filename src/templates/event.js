@@ -59,7 +59,6 @@ function Event({pageContext: {item}}) {
     config: { identifier: id },
   }
 
-  console.log(item)
 
   const [gpx, setGpx] = useState(item.GPX ? JSON.parse(item.GPX) : null)
 

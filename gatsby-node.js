@@ -80,7 +80,6 @@ exports.createPages = async ({
   });
   eventTypes.forEach((type,index) => {
     let item = events.filter(a => a.DescriptionID.startsWith(type)).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-    console.log(item)
     createPage({
       path: `/events/${type.toLowerCase()}`,
       component: require.resolve('./src/templates/subEvent.js'),

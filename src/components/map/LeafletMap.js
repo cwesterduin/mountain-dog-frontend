@@ -38,7 +38,6 @@ function PointMarker(props) {
       }
       else {
         markerRef.current.leafletElement._icon.classList.add('active')
-        console.log(props.selected, props.item.MapFeatureID)
       }
     },[props.selected])
 
@@ -122,7 +121,6 @@ function LeafletMap(props) {
   useEffect(() => {
     if (isLoaded === true) {
       let newItems = items.filter(f => filter.includes(f.Type));
-      console.log(newItems)
       setMapItems(newItems)
     }
     else {}
@@ -137,7 +135,6 @@ function LeafletMap(props) {
   },500)
     setSelected(item.MapFeatureID)
      // mapRef.current.leafletElement.closePopup();
-     // console.log(mapRef.current.leafletElement.marker)
      // document.getElementsByClassName('leaflet-marker-icon').classList.remove('active')
      // e.target._icon.classList.add('active')
   }

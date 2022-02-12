@@ -72,7 +72,6 @@ function Setter(props) {
     let originLng = props.mapItems[0].Lng
     let originLatTopLeft = [props.mapItems[0].Lat - 0.005, props.mapItems[0].Lng - 0.005]
     let originLatBottomRight = [props.mapItems[0].Lat + 0.005, props.mapItems[0].Lng + 0.005]
-    console.log(origin)
     map.fitBounds([originLatTopLeft,originLatBottomRight])
   }
   else {
