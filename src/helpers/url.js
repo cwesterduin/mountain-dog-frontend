@@ -1,3 +1,3 @@
-const url = "https://fathomless-reaches-05046.herokuapp.com/"
+const url = "http://localhost:8080/"
 
 export default url

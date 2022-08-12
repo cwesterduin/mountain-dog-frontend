@@ -14,131 +14,93 @@ import star from '../../static/star.svg'
 import { DiscussionEmbed } from "disqus-react"
 
 import { myContext } from '../components/PageContext';
+import * as L from "leaflet";
 
 
 function EventNumber(props) {
-  const [active, setActive] = useState(props.a.EventID === props.item.EventID)
+  const [active, setActive] = useState(props.a.id === props.item.id)
   useEffect(() => {
     if (active)
     props.checkActive(props.index)
   },[active])
   return(
-    <Link className={eventStyles.event_numbers} Style={props.a.EventID === props.item.EventID ? 'text-decoration:underline' : null} to={`/events/${props.a.EventID}`}>{props.index + 1}</Link>
+    <Link className={eventStyles.event_numbers} Style={props.a.id === props.item.id ? 'text-decoration:underline' : null} to={`/events/${props.a.id}`}>{props.index + 1}</Link>
   )
 }
 
 function EventListNumbers(props) {
     const [active, setActive] = useState(false)
-    const sortedTrips = props.trip.sort((a, b) => a.Date.localeCompare(b.Date))
+    const sortedTrips = props.trip.events.sort((a, b) => a.date.localeCompare(b.date))
     if (props.trip) {
     return(
       <>
-      {active !== false ? active === 0 ? <span className={eventStyles.deadLink}>{'< '}</span> : <Link to={`/events/${sortedTrips[active - 1].EventID}`}>{'<'}</Link> : null}
+      {active !== false ? active === 0 ? <span className={eventStyles.deadLink}>{'< '}</span> : <Link to={`/events/${sortedTrips[active - 1].id}`}>{'<'}</Link> : null}
       {
       sortedTrips.map((a,index) =>
         <EventNumber checkActive={(a) => setActive(a)} item={props.item} a={a} index={index} />
       )
       }
-      {active !== false ? active === (props.trip.length - 1) ? <span className={eventStyles.deadLink}>{' >'}</span> : <Link to={`/events/${sortedTrips[active + 1].EventID}`}>{'>'}</Link> : null}
+      {active !== false ? active === (props.trip.length - 1) ? <span className={eventStyles.deadLink}>{' >'}</span> : <Link to={`/events/${sortedTrips[active + 1].id}`}>{'>'}</Link> : null}
       </>
     )}
     else {return null}
     }
 
-function Event({pageContext: {item}}) {
+function Event({pageContext: {
+    item,
+    eventData,
+    media,
+    items,
+    coordinates,
+    trip
+}}) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [eventData, setEventData] = useState(false);
-  const [items, setItems] = useState([]);
-  const [media, setMedia] = useState([]);
-  const [trip, setTrip] = useState(false);
 
-  const id = `event${item.EventID}`
+
+  const id = `event-${item.id}`
   const disqusConfig = {
     shortname: 'mountain-dog',
     config: { identifier: id },
   }
 
 
-  const [gpx, setGpx] = useState(item.GPX ? JSON.parse(item.GPX) : null)
 
-  useEffect(() => {
-  fetch(`${url}Events/${item.EventID}`)
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setEventData(result.Event[0])
-        setItems(result.MapFeatures);
-        setMedia(result.Media)
-        setIsLoaded(true);
+    const images = media
+        .sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+        .map(item =>
+            'image' === 'image' ?
+                <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline:solid green 2px' : null} className={eventStyles.image_big_cont}>
+                    <GridImage Path={item.path} />
+                    <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null} (ID:{item.id})</div>
+                </div>
+                : item.type === 'panorama' ?
+                    <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline: solid green 2px; width: 100%' : 'width:100%'} className={eventStyles.image_big_cont}>
+                        <GridImage Path={item.path} />
+                        <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null}</div>
+                    </div>
+                    :
+                    <div className={eventStyles.image_big_contB}>
+                        <div className={eventStyles.video_cont}>
+                            <iframe className={eventStyles.video} src={`https://www.youtube.com/embed/${item.path}`} frameborder="0" allowFullScreen="0" controls="0"></iframe>
+                        </div>
+                        <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null}</div>
+                    </div>
+        )
 
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      }
-    )
-  }, [])
 
-  useEffect(() => {
-  fetch(`${url}Trips/${item.TripID}`)
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setTrip(result.Event)
-        setIsLoaded(true);
 
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      }
-    )
-  }, [])
-  // let t = items.Date.split(/[- :]/);
-  // let d = new Date(Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
 
-  const images = media.filter(item => item.Type !== 'map')
-  .sort((a,b) => (a.Order > b.Order) ? 1 : ((b.Order > a.Order) ? -1 : 0))
-  .map(item =>
-    item.Type === 'image' ?
-    <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline:solid green 2px' : null} className={eventStyles.image_big_cont}>
-    <GridImage Path={item.Path} />
-    <div className={eventStyles.image_big_cont_description}>{item.Order}. {item.Description ? item.Description : null} (ID:{item.MediaID})</div>
-    </div>
-    : item.Type === 'panorama' ?
-    <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline: solid green 2px; width: 100%' : 'width:100%'} className={eventStyles.image_big_cont}>
-    <GridImage Path={item.Path} />
-    <div className={eventStyles.image_big_cont_description}>{item.Order}. {item.Description ? item.Description : null}</div>
-    </div>
-    :
-    <div className={eventStyles.image_big_contB}>
-      <div className={eventStyles.video_cont}>
-        <iframe className={eventStyles.video} src={`https://www.youtube.com/embed/${item.Path}`} frameborder="0" allowFullScreen="0" controls="0"></iframe>
-      </div>
-      <div className={eventStyles.image_big_cont_description}>{item.Order}. {item.Description ? item.Description : null}</div>
-    </div>
-  )
 
-  const maps = media.filter(item => item.Type === 'map').map(item =>
-    <div Style="display:flex; flex-direction: row;">
-    <div Style={"padding: 0 .5em"} className={eventStyles.image_big_contB}>
-    <GridImage Path={item.Path} />
-    </div>
-    <div Style={"padding: 0 .5em"} className={eventStyles.image_big_contB}>
-    <GridImage Path={item.Path} />
-    </div>
-    </div>
-  )
 
   let dateParts, jsDate, rating = false
   const monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
   let arr = []
-  if (eventData !== false) {
-     dateParts = eventData.Date.split("-");
-     jsDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+  if (item.date !== false) {
+     dateParts = item.date.split("-");
+     jsDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substring(0,2));
 
-     for (let i=0; i<item.Rating; i++) {
+     for (let i=0; i<item.rating; i++) {
        arr.push(i)
      }
      rating = arr.map(item => <img Style="width:1em;height:1em" src={star}/>)
@@ -162,9 +124,24 @@ const mapContext = useContext(myContext);
 
 function munroContext(item) {
   mapContext.changeReferringFeature(item)
-  let newPull = [...mapContext.referringFilter, item.Type]
+  let newPull = [...mapContext.referringFilter, item.type]
   mapContext.changeReferringFilter(newPull)
 }
+
+    const [crs, setCrs] = useState(false)
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setCrs(new L.Proj.CRS(
+                'EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs',
+                {
+                    resolutions: [ 896.0, 448.0, 224.0, 112.0, 56.0, 28.0, 14.0, 7.0, 3.5, 1.75 ],
+
+                    origin: [ -238375.0, 1376256.0 ],
+                    transformation: L.Transformation(1, 0, -1, 0)
+                }
+
+            ))}
+    },[])
 
 
 
@@ -175,65 +152,64 @@ function munroContext(item) {
 
           <div className={eventStyles.details_cont}>
             <div className={eventStyles.details_mobile}>
-            {item.DistanceKM || item.ElevationM ?
+            {isLoaded ?
             <div Style="text-align:center" className={eventStyles.details_numbers}>
-              {item.DistanceKM ? <span>Distance: {item.DistanceKM}km | </span> : null}
-              {item.ElevationM ? <span>Elevation: {item.ElevationM}m &nbsp;</span> : null}
+              {eventData.distance ? <span>Distance: {eventData.distance}km | </span> : null}
+              {eventData.elevation ? <span>Elevation: {eventData.elevation}m &nbsp;</span> : null}
             </div>
             :null}
-              {eventData === false ? null : eventData.Description}
-              {items.filter(item => item.Type === 'munro').length === 0 ? null :
+              {eventData.description}
+              {items.filter(item => item.type === 'munro').length === 0 ? null :
               <div Style="padding-top:.5em">Munros Walked ({items.filter(item => item.Type === 'munro').length}):&nbsp;
-              {items.filter(item => item.Type === 'munro').map(item => <span className={eventStyles.munro_item}><Link onClick={() => munroContext(item)} to={"/map"}>{item.Name}</Link></span>)}</div>
+              {items.filter(item => item.type === 'munro').map(item => <span className={eventStyles.munro_item}><Link onClick={() => munroContext(item)} to={"/map"}>{item.name}</Link></span>)}</div>
               }
-              {trip === false ? null :
+              {trip ?
               <div Style="display:flex; flex-direction: column; align-items:center; flex: 1; justify-content:flex-end; padding-top: 1em;">
-                {eventData === false || trip === false ? null : eventData.TripID ? <div>Part of trip: <Link to={`/trips/${eventData.TripID}`}>{trip[0].TripName}</Link></div> : null}
-                {eventData === false || trip === false ? null : eventData.TripID ?<div><EventListNumbers trip={trip} item={item} /></div>
+                {trip ? null : trip.id ? <div>Part of trip: <Link to={`/trips/${trip.id}`}>{trip.name}</Link></div> : null}
+                {trip ? null : trip.id ?<div><EventListNumbers trip={trip} item={item} /></div>
                 : null}
-              </div>
+              </div> : null
               }
             </div>
             <div className={eventStyles.map_cont}>
               <div className={eventStyles.map_sub_cont}>
-                <AboutMap isLoaded={isLoaded} mapItems={items} gpx={gpx} />
+                  {crs ?
+                <AboutMap crs={crs} isLoaded={isLoaded} mapItems={items} coordinates={coordinates} />
+                      : null}
               </div>
-              {/* maps.length > 0 ? <><span>Additional Maps</span>
-                <div Style="padding:0 !important">{maps}</div></>
-              : null */}
             </div>
             <div className={eventStyles.description_cont}>
             <div className={eventStyles.details_title}>
-              <h1 className={eventStyles.details_title_heading}>{eventData === false ? 'loading...' : eventData.Name}</h1><span>{jsDate ? `${ordinal_suffix_of(jsDate.getDate())} ${monthNames[jsDate.getMonth()]} ${jsDate.getFullYear()}` : null}</span>
-              {eventData === false ? null : eventData.Rating ? <div>{rating}</div> : null}
+              <h1 className={eventStyles.details_title_heading}>{eventData === false ? 'loading...' : eventData.name}</h1><span>{jsDate ? `${ordinal_suffix_of(jsDate.getDate())} ${monthNames[jsDate.getMonth()]} ${jsDate.getFullYear()}` : null}</span>
+              {eventData === false ? null : eventData.rating ? <div>{rating}</div> : null}
             </div>
 
             {eventData === false ? null :
             <div className={eventStyles.details}>
 
-                {item.DistanceKM || item.ElevationM ?
+                {eventData.distance || eventData.elevation ?
                 <div className={eventStyles.details_numbers}>
-                  {item.DistanceKM ? <span>Distance: {item.DistanceKM} km | </span> : null}
-                  {item.ElevationM ? <span>Elevation: {item.ElevationM} m</span> : null}
+                  {eventData.distance ? <span>Distance: {eventData.distance} km | </span> : null}
+                  {eventData.elevation ? <span>Elevation: {eventData.elevation} m</span> : null}
                 </div>
                 :null}
 
-                {eventData === false ? null : eventData.Description}
+                {eventData === false ? null : eventData.description}
 
-                {items.filter(item => item.Type === 'munro').length === 0 ? null :
-                <div Style="padding-top:.5em">Munros Walked ({items.filter(item => item.Type === 'munro').length}):&nbsp;
-                {items.filter(item => item.Type === 'munro').map(item => <span className={eventStyles.munro_item}><Link onClick={() => munroContext(item)} to={"/map"}>{item.Name}</Link></span>)}</div>
+                {items.filter(item => item.type === 'munro').length === 0 ? null :
+                <div Style="padding-top:.5em">Munros Walked ({items.filter(item => item.type === 'munro').length}):&nbsp;
+                {items.filter(item => item.type === 'munro').map(item => <span className={eventStyles.munro_item}><Link onClick={() => munroContext(item)} to={"/map"}>{item.name}</Link></span>)}</div>
                 }
 
             </div>
             }
 
-            {trip === false ? null :
+            {trip ?
             <div className={`${eventStyles.trip_context}`}>
-              {eventData === false || trip === false ? null : eventData.TripID ? <div><Link to={`/trips/${eventData.TripID}`}>{trip[0].TripName}</Link></div> : null}
-              {eventData === false || trip === false ? null : eventData.TripID ?<div><EventListNumbers trip={trip} item={item} /></div>
+              {eventData === false || trip === false ? null : trip.id ? <div><Link to={`/trips/${trip.id}`}>{trip.name}</Link></div> : null}
+              {eventData === false || trip === false ? null : trip.id ?<div><EventListNumbers trip={trip} item={item} /></div>
               : null}
-            </div>
+            </div> : null
             }
 
           </div>
@@ -244,9 +220,6 @@ function munroContext(item) {
 
         <div className={eventStyles.imageTopCont}>
           {images}
-          {/*<div className={eventStyles.image_big_contB}>
-            <div className={eventStyles.video_cont}><iframe className={eventStyles.video} src="https://www.youtube.com/embed/Xv9w9nf3X-4" frameborder="0" allowFullScreen="0" controls="0"></iframe></div>
-          </div> */}
           </div>
           <div className={eventStyles.comment_cont}><DiscussionEmbed {...disqusConfig} /></div>
     </div>

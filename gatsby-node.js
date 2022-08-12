@@ -1,71 +1,85 @@
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`
 });
-const url = "https://fathomless-reaches-05046.herokuapp.com/"
+const url = "http://localhost:8080/"
 
 let eventTypes = ['Munro','Corbett','Swim','Kayak','Bike','Walk']
 
 const fetch = require('node-fetch')
 const getEventsData = async () => {
-  return fetch(url + "Events")
+  return fetch(url + "events")
   .then(res => res.json())
+};
+const getOneEventData = async (id) => {
+  return fetch(url + "events/" + id)
+      .then(res => res.json())
 };
 const getTripsData = async () => {
-  return fetch(url + "Trips")
-  .then(res => res.json())
-};
-const getBlogsData = async () => {
-  return fetch(url + "BlogPosts")
+  return fetch(url + "trips")
   .then(res => res.json())
 };
 
-const getMediaDate = async () => {
-  return fetch(url + "MediaDate")
-  .then(res => res.json())
-};
 
-const mapFeatures = async () => {
-  return fetch(url + "mapFeatures")
-  .then(res => res.json())
-};
+// const getMediaDate = async () => {
+//   return fetch(url + "MediaDate")
+//   .then(res => res.json())
+// };
 
-const eventMapFeatures = async () => {
-  return fetch(url + "EventMapFeatures")
-  .then(res => res.json())
-};
+// const mapFeatures = async () => {
+//   return fetch(url + "mapFeatures")
+//   .then(res => res.json())
+// };
+//
+// const eventMapFeatures = async () => {
+//   return fetch(url + "eventMapFeatures")
+//   .then(res => res.json())
+// };
 
 exports.createPages = async ({
   actions: {
     createPage
   }
 }) => {
-  const mf = await mapFeatures()
-  const emf  = await eventMapFeatures()
-  createPage({
-    path: `/map`,
-    component: require.resolve('./src/templates/mapPage.js'),
-    context: {
-     mf,
-     emf
-    }
-  }
-  );
+  // const mf = await mapFeatures()
+  // const emf  = await eventMapFeatures()
+  // createPage({
+  //   path: `/map`,
+  //   component: require.resolve('./src/templates/mapPage.js'),
+  //   context: {
+  //    mf,
+  //    emf
+  //   }
+  // }
+  // );
 
   //create a page for each event
   let events = await getEventsData();
 
-  events = events.results;
-  // Create a page for each painting.
-  events.forEach((item,index) => {
-    createPage({
-      path: `/events/${item.EventID}`,
-      component: require.resolve('./src/templates/event.js'),
-      context: {
-        item
-      }
-      }
-    );
-  });
+
+  // Create a page for each event.
+  async function createEvents() {
+    for (let item of events) {
+      let eventData = await getOneEventData(item.id);
+      let media = eventData.media
+      let items = eventData.mapFeatures
+      let coordinates = eventData.coordinates
+      let trip = eventData.trip
+      createPage({
+            path: `/events/${item.id}`,
+            component: require.resolve('./src/templates/event.js'),
+            context: {
+              item,
+              eventData,
+              media,
+              items,
+              coordinates,
+              trip
+            }
+          }
+      );
+    }
+  }
+  await createEvents()
   //create a page for each Trip
   let trips = await getTripsData();
   trips = trips.results;
@@ -108,28 +122,28 @@ exports.createPages = async ({
       item
     }
   });
-  let winter = ["01","02","03","04","11","12"]
-  let summer = ["05","06","07","08","09","10"]
-  let seasons = ["summer","winter"]
-  let mediaDate = await getMediaDate()
-  mediaDate = mediaDate.results
-  seasons.forEach((season,index) => {
-    let items
-    if (season === "summer") {
-       items = mediaDate.filter(a => a.Type === 'image').filter(a => summer.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
-    }
-    else {
-       items = mediaDate.filter(a => a.Type === 'image').filter(a => winter.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
-     }
-    createPage({
-      path: `/gallery/${season}`,
-      component: require.resolve('./src/templates/gallery.js'),
-      context: {
-        items
-      }
-      }
-    );
-  });
+  // let winter = ["01","02","03","04","11","12"]
+  // let summer = ["05","06","07","08","09","10"]
+  // let seasons = ["summer","winter"]
+  // let mediaDate = await getMediaDate()
+  // mediaDate = mediaDate.results
+  // seasons.forEach((season,index) => {
+  //   let items
+  //   if (season === "summer") {
+  //      items = mediaDate.filter(a => a.Type === 'image').filter(a => summer.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
+  //   }
+  //   else {
+  //      items = mediaDate.filter(a => a.Type === 'image').filter(a => winter.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
+  //    }
+  //   createPage({
+  //     path: `/gallery/${season}`,
+  //     component: require.resolve('./src/templates/gallery.js'),
+  //     context: {
+  //       items
+  //     }
+  //     }
+  //   );
+  // });
 };
 
 
