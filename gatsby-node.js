@@ -1,35 +1,36 @@
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`
 });
+const url = "https://fathomless-reaches-05046.herokuapp.com/"
 
 let eventTypes = ['Munro','Corbett','Swim','Kayak','Bike','Walk']
 
 const fetch = require('node-fetch')
 const getEventsData = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/Events")
+  return fetch(url + "Events")
   .then(res => res.json())
 };
 const getTripsData = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/Trips")
+  return fetch(url + "Trips")
   .then(res => res.json())
 };
 const getBlogsData = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/BlogPosts")
+  return fetch(url + "BlogPosts")
   .then(res => res.json())
 };
 
 const getMediaDate = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/MediaDate")
+  return fetch(url + "MediaDate")
   .then(res => res.json())
 };
 
 const mapFeatures = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/mapFeatures")
+  return fetch(url + "mapFeatures")
   .then(res => res.json())
 };
 
 const eventMapFeatures = async () => {
-  return fetch("https://fathomless-reaches-05046.herokuapp.com/EventMapFeatures")
+  return fetch(url + "EventMapFeatures")
   .then(res => res.json())
 };
 

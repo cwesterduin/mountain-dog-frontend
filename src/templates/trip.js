@@ -4,6 +4,7 @@ import Layout from '../components/layout'
 import TripMap from '../components/map/TripMap'
 import eventStyles from './eventStyles.module.css'
 import pageStyles from "../pages/pageStyles.module.css"
+import url from "../helpers/url"
 
 import { DiscussionEmbed } from "disqus-react"
 
@@ -24,7 +25,7 @@ function Event({pageContext: {item}}) {
   }
 
   useEffect(() => {
-  fetch(`https://fathomless-reaches-05046.herokuapp.com/Trips/${item.TripID}`)
+  fetch(`${url}Trips/${item.TripID}`)
     .then(res => res.json())
     .then(
       (result) => {

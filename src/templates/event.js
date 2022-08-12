@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
-import Image from '../components/Image'
 import GridImage from '../components/GridImage'
+import url from "../helpers/url"
 
 import AboutMap from '../components/map/AboutMap'
 
@@ -63,7 +63,7 @@ function Event({pageContext: {item}}) {
   const [gpx, setGpx] = useState(item.GPX ? JSON.parse(item.GPX) : null)
 
   useEffect(() => {
-  fetch(`https://fathomless-reaches-05046.herokuapp.com/Events/${item.EventID}`)
+  fetch(`${url}Events/${item.EventID}`)
     .then(res => res.json())
     .then(
       (result) => {
@@ -81,7 +81,7 @@ function Event({pageContext: {item}}) {
   }, [])
 
   useEffect(() => {
-  fetch(`https://fathomless-reaches-05046.herokuapp.com/Trips/${item.TripID}`)
+  fetch(`${url}Trips/${item.TripID}`)
     .then(res => res.json())
     .then(
       (result) => {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
-import Image from '../components/Image'
 import pageStyles from "./pageStyles.module.css"
-import tripStyles from "./tripStyles.module.css"
 
+import url from "../helpers/url"
 
 function ordinal_suffix_of(i) {
  var j = i % 10,
@@ -39,7 +38,7 @@ export default function Trips() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-  fetch(`https://fathomless-reaches-05046.herokuapp.com/Trips`)
+  fetch(`${url}Trips`)
     .then(res => res.json())
     .then(
       (result) => {
