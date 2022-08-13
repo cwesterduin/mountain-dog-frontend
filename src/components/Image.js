@@ -14,7 +14,7 @@ function Image(props) {
             relativePath
             default: childImageSharp {
               fluid(quality:80) {
-                ...GatsbyImageSharpFluid
+                ...GatsbyImageSharpFluid_withWebp
               }
             }
 
