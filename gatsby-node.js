@@ -82,10 +82,9 @@ exports.createPages = async ({
   await createEvents()
   //create a page for each Trip
   let trips = await getTripsData();
-  trips = trips.results;
   trips.forEach((item,index) => {
     createPage({
-      path: `/trips/${item.TripID}`,
+      path: `/trips/${item.id}`,
       component: require.resolve('./src/templates/trip.js'),
       context: {
         item
@@ -93,35 +92,35 @@ exports.createPages = async ({
       }
     );
   });
-  eventTypes.forEach((type,index) => {
-    let item = events.filter(a => a.DescriptionID.startsWith(type)).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-    createPage({
-      path: `/events/${type.toLowerCase()}`,
-      component: require.resolve('./src/templates/subEvent.js'),
-      context: {
-        item
-      }
-      }
-    );
-  });
-  let filterTrips = trips.filter((v,i,a)=>a.findIndex(t=>(t.TripID === v.TripID))===i)
-  .sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-  createPage({
-    path: `/events/trips`,
-    component: require.resolve('./src/templates/subTrip.js'),
-    context: {
-      filterTrips
-    }
-  });
-  let topID = [113,11,105,80,92,96,103,109,120]
-  let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-  createPage({
-    path: `/events/top`,
-    component: require.resolve('./src/templates/subEvent.js'),
-    context: {
-      item
-    }
-  });
+  // eventTypes.forEach((type,index) => {
+  //   let item = events.filter(a => a.DescriptionID.startsWith(type)).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+  //   createPage({
+  //     path: `/events/${type.toLowerCase()}`,
+  //     component: require.resolve('./src/templates/subEvent.js'),
+  //     context: {
+  //       item
+  //     }
+  //     }
+  //   );
+  // });
+  // let filterTrips = trips.filter((v,i,a)=>a.findIndex(t=>(t.TripID === v.TripID))===i)
+  // .sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+  // createPage({
+  //   path: `/events/trips`,
+  //   component: require.resolve('./src/templates/subTrip.js'),
+  //   context: {
+  //     filterTrips
+  //   }
+  // });
+  // let topID = [113,11,105,80,92,96,103,109,120]
+  // let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+  // createPage({
+  //   path: `/events/top`,
+  //   component: require.resolve('./src/templates/subEvent.js'),
+  //   context: {
+  //     item
+  //   }
+  // });
   // let winter = ["01","02","03","04","11","12"]
   // let summer = ["05","06","07","08","09","10"]
   // let seasons = ["summer","winter"]
