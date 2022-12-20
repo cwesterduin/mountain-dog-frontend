@@ -20,7 +20,7 @@ function Search(props) {
   function SearchDropdownItems(props) {
     if (dropDownItems.length > 0) {
     return (
-      dropDownItems.sort((a, b) => a.Name.localeCompare(b.Name)).map(item =>
+      dropDownItems.sort((a, b) => a.name.localeCompare(b.name)).map(item =>
         <li className={"searchItem"}
             onFocus={props.onFocus}
             onBlur={props.onBlur}
@@ -29,8 +29,8 @@ function Search(props) {
             tabindex="0" Style={"font-size: 1em; padding: 4px 4px"}>
           <img
             Style={"height:16px; width:16px; margin-right: .1em"}
-            src={keyIcons[item.Type]}/>
-            {item.Name}
+            src={keyIcons[item.type]}/>
+            {item.name}
         </li>
     )
   )
@@ -48,8 +48,8 @@ function Search(props) {
       setHidden(false)
       let filterDropdownItems = dropDownItemsConst
       .filter(a =>
-          a.Name.split(" ").some(a => a.toLowerCase().startsWith(featureSearch.toLowerCase())) ||
-          a.Name.toLowerCase().startsWith(featureSearch.toLowerCase())
+          a.name.split(" ").some(a => a.toLowerCase().startsWith(featureSearch.toLowerCase())) ||
+          a.name.toLowerCase().startsWith(featureSearch.toLowerCase())
       )
       setDropDownItems(filterDropdownItems)
     }
@@ -63,8 +63,8 @@ function Search(props) {
     if (featureSearch.length > 0) {
       let filterDropdownItems = dropDownItemsConst
       .filter(a =>
-        a.Name.split(" ").some(a => a.toLowerCase().startsWith(featureSearch.toLowerCase())) ||
-        a.Name.toLowerCase().startsWith(featureSearch.toLowerCase())
+        a.name.split(" ").some(a => a.toLowerCase().startsWith(featureSearch.toLowerCase())) ||
+        a.name.toLowerCase().startsWith(featureSearch.toLowerCase())
       )
     setDropDownItems(filterDropdownItems)
     setHidden(false)

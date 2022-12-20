@@ -11,13 +11,10 @@ function Item(props) {
     <Link onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} to={props.to !== null ? `/trips/${props.to}` : null} className={tripStyles.item_cont}
     Style={hover ? 'border:solid .1em #333' : null}
     >
-      <Image
+      <img
         className={tripStyles.item_cont_img}
-        imgStyle = {{
-          objectFit : 'cover'
-        }}
         style={hover ? {position:"default", borderBottom: 'solid .1em #333'} : {position:"default", borderBottom: 'solid .1em transparent'}}
-        filename={props.filename}
+        src={"https://alfie76589.s3.eu-west-2.amazonaws.com/" + props.filename}
       />
       <h2>{props.text}</h2>
     </Link>
@@ -27,7 +24,7 @@ function Item(props) {
 function SubTrip({pageContext: {filterTrips}}) {
 
 const munroList = filterTrips.map(subItem =>
-  <Item to={subItem.TripID} text={`${subItem.Name}`} desc={subItem.Description} filename={subItem.Path ?  subItem.Path : 'favourites/test.png'}/>
+  <Item to={subItem.id} text={`${subItem.name}`} desc={subItem.description} filename={subItem.primaryImage ?  subItem.primaryImage.path : 'images/Favourites/test.png'}/>
 )
 
 return (

@@ -38,7 +38,7 @@ export default function Trips() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-  fetch(`${url}Trips`)
+  fetch(`${url}trips`)
     .then(res => res.json())
     .then(
       (result) => {
@@ -82,10 +82,10 @@ export default function Trips() {
 */
 
 const trips = items.sort((a, b) => a.Date.localeCompare(b.Date)).reverse()
-.filter((v,i,a)=>a.findIndex(t=>(t.TripID === v.TripID))===i)
+.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)
 .map((trip, key) => (
  <div>
-     <div><Link to={`/trips/${trip.TripID}`}>{trip.Name}</Link> {makeDate(items.sort((a, b) => a.Date.localeCompare(b.Date)).reverse().filter(item => item.TripID === trip.TripID)[0].Date)}</div>
+     <div><Link to={`/trips/${trip.id}`}>{trip.name}</Link> {makeDate(items.sort((a, b) => a.date.localeCompare(b.date)).reverse().filter(item => item.id === trip.id)[0].date)}</div>
 </div>))
 
 return (

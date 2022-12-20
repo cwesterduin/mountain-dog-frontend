@@ -46,9 +46,11 @@ function PointMarker(props) {
   }
   }
 
-  useEffect(() => {
-    markerRef.current.leafletElement._icon.classList.add('active')
-  },[])
+  // useEffect(() => {
+  //   if (markerRef) {
+  //     markerRef.current.leafletElement._icon.classList.add('active')
+  //   }
+  // },[])
   return (
     <Marker
     ref={markerRef}
@@ -77,7 +79,8 @@ function PointsLayer(props) {
 function Setter(props) {
   const { map } = useLeaflet();
   useEffect(() => {
-  if (!props.coordinates || props.coordinates.length <= 2) {
+    console.log(props)
+  if (props.coordinates == "false" || props.coordinates.length <= 2) {
     let originLatTopLeft = [props.mapItems[0].coordinate[0] - 0.005, props.mapItems[0].coordinate[1] - 0.005]
     let originLatBottomRight = [props.mapItems[0].coordinate[0] + 0.005, props.mapItems[0].coordinate[1] + 0.005]
     let originBounds = [

@@ -10,7 +10,7 @@ function Legend(props) {
   }
   else {
         map.invalidateSize()
-        map.flyTo([props.updatePosition.Lat, props.updatePosition.Lng], props.zoom < 9 ? 9 : props.zoom)
+        map.flyTo([props.updatePosition.coordinate[0], props.updatePosition.coordinate[1]], props.zoom < 9 ? 9 : props.zoom)
       }
   },[props.updatePosition])
   return (

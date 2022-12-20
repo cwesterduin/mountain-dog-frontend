@@ -3,11 +3,11 @@ require("dotenv").config({
 });
 const url = "http://localhost:8080/"
 
-let eventTypes = ['Munro','Corbett','Swim','Kayak','Bike','Walk']
+let eventTypes = ['munro','corbett','swim','kayak','bike','walk']
 
 const fetch = require('node-fetch')
 const getEventsData = async () => {
-  return fetch(url + "events")
+  return fetch(url + "events/frontend")
   .then(res => res.json())
 };
 const getOneEventData = async (id) => {
@@ -15,43 +15,43 @@ const getOneEventData = async (id) => {
       .then(res => res.json())
 };
 const getTripsData = async () => {
-  return fetch(url + "trips")
+  return fetch(url + "trips/frontend")
+  .then(res => res.json())
+};
+const getOneTrip = async (id) => {
+  return fetch(url + "trips/" + id)
+      .then(res => res.json())
+};
+const mapFeatures = async () => {
+  return fetch(url + "map-features/frontend")
   .then(res => res.json())
 };
 
-
-// const getMediaDate = async () => {
-//   return fetch(url + "MediaDate")
-//   .then(res => res.json())
-// };
-
-// const mapFeatures = async () => {
-//   return fetch(url + "mapFeatures")
-//   .then(res => res.json())
-// };
-//
-// const eventMapFeatures = async () => {
-//   return fetch(url + "eventMapFeatures")
-//   .then(res => res.json())
-// };
+const eventMapFeatures = async () => {
+  return fetch(url + "eventMapFeatures")
+  .then(res => res.json())
+};
 
 exports.createPages = async ({
   actions: {
     createPage
   }
 }) => {
-  // const mf = await mapFeatures()
-  // const emf  = await eventMapFeatures()
-  // createPage({
-  //   path: `/map`,
-  //   component: require.resolve('./src/templates/mapPage.js'),
-  //   context: {
-  //    mf,
-  //    emf
-  //   }
-  // }
-  // );
 
+
+  async function createMap() {
+    let mf = await mapFeatures()
+    let emf = await eventMapFeatures()
+    createPage({
+          path: `/map`,
+          component: require.resolve('./src/templates/mapPage.js'),
+          context: {
+            mf
+          }
+        }
+    );
+  }
+  await createMap()
   //create a page for each event
   let events = await getEventsData();
 
@@ -82,45 +82,56 @@ exports.createPages = async ({
   await createEvents()
   //create a page for each Trip
   let trips = await getTripsData();
-  trips.forEach((item,index) => {
+  async function createTrips() {
+    for (let item of trips) {
+      let tripData = await getOneTrip(item.id)
+      let mapFeatures = []
+      for (let event of tripData.events) {
+        let tripEventData = await getOneEventData(event.id)
+        mapFeatures.push(tripEventData.mapFeatures)
+      }
+      createPage({
+            path: `/trips/${item.id}`,
+            component: require.resolve('./src/templates/trip.js'),
+            context: {
+              item: tripData,
+              mapItems: mapFeatures
+            }
+          }
+      );
+    };
+  }
+  await createTrips()
+  eventTypes.forEach((type,index) => {
+    let item = events.filter(a => a.descriptionId.toLowerCase().startsWith(type)).sort((a, b) => (a.date > b.date) ? -1 : 1)
+    console.log(item)
     createPage({
-      path: `/trips/${item.id}`,
-      component: require.resolve('./src/templates/trip.js'),
+      path: `/events/${type}`,
+      component: require.resolve('./src/templates/subEvent.js'),
       context: {
         item
       }
       }
     );
   });
-  // eventTypes.forEach((type,index) => {
-  //   let item = events.filter(a => a.DescriptionID.startsWith(type)).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-  //   createPage({
-  //     path: `/events/${type.toLowerCase()}`,
-  //     component: require.resolve('./src/templates/subEvent.js'),
-  //     context: {
-  //       item
-  //     }
-  //     }
-  //   );
-  // });
-  // let filterTrips = trips.filter((v,i,a)=>a.findIndex(t=>(t.TripID === v.TripID))===i)
-  // .sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-  // createPage({
-  //   path: `/events/trips`,
-  //   component: require.resolve('./src/templates/subTrip.js'),
-  //   context: {
-  //     filterTrips
-  //   }
-  // });
-  // let topID = [113,11,105,80,92,96,103,109,120]
-  // let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
-  // createPage({
-  //   path: `/events/top`,
-  //   component: require.resolve('./src/templates/subEvent.js'),
-  //   context: {
-  //     item
-  //   }
-  // });
+  let filterTrips = trips.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)
+  .sort((a, b) => (a.date > b.date) ? -1 : 1)
+  createPage({
+    path: `/events/trips`,
+    component: require.resolve('./src/templates/subTrip.js'),
+    context: {
+      filterTrips
+    }
+  });
+  let topID = [113,11,105,80,92,96,103,109,120]
+  let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+  createPage({
+    path: `/events/top`,
+    component: require.resolve('./src/templates/subEvent.js'),
+    context: {
+      item
+    }
+  });
   // let winter = ["01","02","03","04","11","12"]
   // let summer = ["05","06","07","08","09","10"]
   // let seasons = ["summer","winter"]

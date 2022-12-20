@@ -11,7 +11,7 @@ export default function Map({pageContext: {mf, emf}}) {
   return (
     <div className={pageStyles.content_map}>
     <Link Style="position:absolute;height:2em;width:2em;z-index:99999; top: 0.5em;left:0.5em; margin-top:0" className={headStyles.logo_cont} to="/"><img className={headStyles.logo} src={logo}/></Link>
-      <LeafletMap items={mf.results} extraItems={emf.results} />
+      <LeafletMap items={mf}  />
     </div>
   )
 }

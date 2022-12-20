@@ -25,7 +25,6 @@ function Image(props) {
   `);
 
   const image = images.data.edges.find(n => {
-    console.log(image)
     return n.node.relativePath.includes(filename);
   });
 

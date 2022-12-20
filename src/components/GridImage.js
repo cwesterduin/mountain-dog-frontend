@@ -9,11 +9,11 @@ function GridImage(props) {
     console.log(props)
   return (
     <div ref={ref} className={eventStyles.imageCont}>
-      <Image
-        imgStyle = {{
+      <img
+        Style = {{
           objectFit : 'scale-down '
         }}
-        filename={props.Path}
+        src={props.Path}
       />
     </div>
   )

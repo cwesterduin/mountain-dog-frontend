@@ -9,9 +9,9 @@ import url from "../helpers/url"
 import { DiscussionEmbed } from "disqus-react"
 
 
-function Event({pageContext: {item}}) {
+function Event({pageContext: {item, mapItems}}) {
+    mapItems = mapItems.flat()
   const [items, setItems] = useState([])
-  const [mapItems, setMapItems] = useState([])
   const [gpx, setGpx] = useState(null)
 
 
@@ -24,28 +24,12 @@ function Event({pageContext: {item}}) {
     config: { identifier: id },
   }
 
-  useEffect(() => {
-  fetch(`${url}Trips/${item.TripID}`)
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setItems(result.Event);
-        setMapItems(result.MapFeatures);
-        setIsLoaded(true);
-
-      },
-      (error) => {
-        setIsLoaded(true);
-        setError(error);
-      }
-    )
-  }, [])
 
   let dateParts, jsDate = false
   const monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
   let arr = []
   if (isLoaded !== false) {
-     dateParts = items.sort((a, b) => a.Date.localeCompare(b.Date))[0].Date.split("-");
+     dateParts = item.events.sort((a, b) => a.date.localeCompare(b.date))[0].date.split("-");
      jsDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
    }
    function ordinal_suffix_of(i) {
@@ -63,32 +47,31 @@ function Event({pageContext: {item}}) {
     return i + "th";
 }
 
-  const events = items.sort((a, b) => a.Date.localeCompare(b.Date)).map((item,index) =>
+  const events = item.events.sort((a, b) => a.date.localeCompare(b.date)).map((item,index) =>
     <>
     <div>
       <span>Stage {index + 1}: </span>
-      <Link to={`/events/${item.EventID}`}>{item.Name}</Link>
+      <Link to={`/events/${item.id}`}>{item.name}</Link>
     </div>
     </>
   )
 
-  const munros = mapItems.filter(item => item.Type === 'munro').map(item =>
-    <span className={eventStyles.munro_item}>{item.Name}</span>
+  const munros = mapItems.filter(item => item.type === 'munro').map(item =>
+    <span className={eventStyles.munro_item}>{item.name}</span>
   )
 
-  let totalDistance = items.filter(a => a.DistanceKM !== null).map(a => a.DistanceKM)
+  let totalDistance = item.events.filter(a => a.distance !== null).map(a => a.distance)
   totalDistance.length === 1 ? totalDistance = totalDistance[0] : totalDistance = totalDistance.reduce((a,b) => a + b, 0)
 
-  let totalElevation = items.filter(a => a.ElevationM !== null).map(a => a.ElevationM)
+  let totalElevation = item.events.filter(a => a.elevation !== null).map(a => a.elevation)
   totalElevation.length === 1 ? totalElevation = totalElevation[0] : totalElevation = totalElevation.reduce((a,b) => a + b, 0)
 
 
-  const tripItems = mapItems.sort((a, b) => a.Date.localeCompare(b.Date)).filter((v,i,a)=>a.findIndex(t=>(t.EventID === v.EventID))===i)
+
 
   return (
     <Layout>
     <div className={pageStyles.content}>
-    {/*<div className={eventStyles.tag}>Trip 1</div>*/}
 
         <div className={eventStyles.content_top}>
         <div className={eventStyles.details_cont}>
@@ -101,16 +84,16 @@ function Event({pageContext: {item}}) {
 
           <div className={eventStyles.map_cont}>
             <div className={eventStyles.map_sub_cont}>
-              <TripMap isLoaded={isLoaded} mapItems={tripItems} gpx={gpx} />
+              <TripMap isLoaded={isLoaded} mapItems={mapItems} gpx={gpx} />
             </div>
           </div>
 
           <div Style="display:flex; flex-direction:column" className={eventStyles.description_cont}>
 
           <div className={eventStyles.details_title}>
-            <h1>{item.Name}</h1>
+            <h1>{item.name}</h1>
             <div>{jsDate ? `${ordinal_suffix_of(jsDate.getDate())} ${monthNames[jsDate.getMonth()]} ${jsDate.getFullYear()}` : null}</div>
-            <div>{item.Description}</div>
+            <div>{item.description}</div>
           </div>
             <div className={eventStyles.details}>
               {munros.length > 0 ? <div><b>Munros climbed ({munros.length}): </b>{munros}</div> : null}
@@ -123,7 +106,7 @@ function Event({pageContext: {item}}) {
         </div>
         </div>
 
-        {/*<div>{events}</div>*/}
+        <div>{events}</div>
 
         <div className={eventStyles.comment_cont}><DiscussionEmbed {...disqusConfig} /></div>
     </div>

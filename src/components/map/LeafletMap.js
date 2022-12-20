@@ -23,17 +23,17 @@ function PointMarker(props) {
   const markerRef = useRef(null)
 
     function clickEvent(e) {
-     //if (props.selected === e.MapFeatureID) {
-      //      markerRef.current.leafletElement._icon.classList.remove('active')
-        //    markerRef.current.leafletElement.closePopup()
-          //  props.close()
-        //  }
+     if (props.selected === e.id) {
+           markerRef.current.leafletElement._icon.classList.remove('active')
+           markerRef.current.leafletElement.closePopup()
+           props.close()
+         }
         props.goPopover(e)
     }
 
 
     useEffect(() => {
-      if (props.selected !== props.item.MapFeatureID) {
+      if (props.selected !== props.item.id) {
         markerRef.current.leafletElement._icon.classList.remove('active')
       }
       else {
@@ -44,13 +44,13 @@ function PointMarker(props) {
   return (
     <Marker
     ref={markerRef}
-    position={[props.item.Lat,props.item.Lng]}
-    icon={icons[props.item.Type]}
+    position={[props.item.coordinate[0],props.item.coordinate[1]]}
+    icon={icons[props.item.type]}
     onClick={() => clickEvent(props.item)}
     onKeyPress={(e) => e.originalEvent.code === 'Enter' ? clickEvent(props.item) : null}
     >
       <Tooltip direction={"top"} offset={[0, -16]} opacity={"0.8"}>
-        <b>{props.item.Name}</b>
+        <b>{props.item.name}</b>
       </Tooltip>
     </Marker>
   )
@@ -71,7 +71,7 @@ function PointsLayer(props) {
 
 function LeafletMap(props) {
   const items = props.items
-  const extraItems = props.extraItems
+  // const extraItems = props.extraItems
   const mapContext = useContext(myContext);
 
 
@@ -120,7 +120,7 @@ function LeafletMap(props) {
 
   useEffect(() => {
     if (isLoaded === true) {
-      let newItems = items.filter(f => filter.includes(f.Type));
+      let newItems = items.filter(f => filter.includes(f.type));
       setMapItems(newItems)
     }
     else {}
@@ -195,7 +195,7 @@ function LeafletMap(props) {
 
             {/*<button onClick={() => fullScreenToggle(mapCont)}>fullScreen</button>*/}
             <CheckBoxes filter={filter} tryChange={tryChange}/>
-            {popover ? <Popover closing={popoverClosing} close={close} item={popover} extraItems={extraItems} /> : null}
+            {/*{popover ? <Popover closing={popoverClosing} close={close} item={popover} extraItems={extraItems} /> : null}*/}
 
           {isLoaded ?
           <Map  ref={mapRef} maxZoom={15} zoom={7} center={[57.5,-4]} className={popover ? 'active' : null}
