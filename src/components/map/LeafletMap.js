@@ -20,203 +20,123 @@ import { myContext } from '../PageContext';
 
 
 function PointMarker(props) {
-  const markerRef = useRef(null)
+  const mapContext = useContext(myContext);
+  const markerRef = useRef(null);
+  const [active, setActive] = useState(false);
 
-    function clickEvent(e) {
-      if (props.selected === e.id) {
-           markerRef.current.leafletElement._icon.classList.remove('active')
-           markerRef.current.leafletElement.closePopup()
-           props.close()
-         }
-        props.goPopover(e)
+  function clickEvent(e) {
+    if (mapContext.referringFeature?.id === props.item.id) {
+      setActive(false);
+      markerRef.current.leafletElement._icon.classList.remove('active');
+      markerRef.current.leafletElement.closePopup();
+      props.close();
     }
+    mapContext.changeReferringFeature(props.item);
+    props.goPopover(e);
+  }
 
-
-    useEffect(() => {
-      if (props.selected !== props.item.id) {
-        markerRef.current.leafletElement._icon.classList.remove('active')
-      }
-      else {
-        markerRef.current.leafletElement._icon.classList.add('active')
-      }
-    },[props.selected])
+  useEffect(() => {
+    if (mapContext.referringFeature?.id !== props.item.id) {
+      setActive(false);
+      markerRef.current.leafletElement._icon.classList.remove('active');
+    } else {
+      setActive(true);
+      markerRef.current.leafletElement._icon.classList.add('active');
+    }
+  }, [mapContext.referringFeature, props.item]);
 
   return (
-    <Marker
-    ref={markerRef}
-    position={[props.item.coordinate[0],props.item.coordinate[1]]}
-    icon={icons[props.item.type]}
-    onClick={() => clickEvent(props.item)}
-    onKeyPress={(e) => e.originalEvent.code === 'Enter' ? clickEvent(props.item) : null}
-    >
-      <Tooltip direction={"top"} offset={[0, -16]} opacity={"0.8"}>
-        <b>{props.item.name}</b>
-      </Tooltip>
-    </Marker>
-  )
+      <Marker
+          ref={markerRef}
+          position={[props.item.coordinate[0], props.item.coordinate[1]]}
+          icon={icons[props.item.type]}
+          onClick={() => clickEvent(props.item)}
+          onKeyPress={(e) => (e.originalEvent.code === 'Enter' ? clickEvent(props.item) : null)}
+      >
+        <Tooltip key={`${props.item.id}-${active}`} permanent={active} direction="top" offset={[0, -16]} opacity="0.8">
+          <b>{props.item.name}</b>
+        </Tooltip>
+      </Marker>
+  );
 }
 
 function PointsLayer(props) {
-  return (
-    props.mapItems.map((item,index) =>
-      <PointMarker
-        close={props.close}
-        selected={props.selected}
-        item={item}
-        goPopover={props.goPopover}
-      />
-  ))
+  return props.mapItems.map((item, index) => (
+      <PointMarker close={props.close} item={item} goPopover={props.goPopover} key={item.id} />
+  ));
 }
 
-
 function LeafletMap(props) {
-  const items = props.items
-  // const extraItems = props.extraItems
+  const items = props.items;
   const mapContext = useContext(myContext);
 
-
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(true);
-
-
-  const [mapItems, setMapItems] = useState([])
-  const [filter, setFilter] = useState([]);
-  const [popover, setPopover] = useState()
-  const [updatePosition, setUpdatePosition] = useState()
-
-  const [popoverClosing, setPopoverClosing] = useState(false)
-  const [zoom, setZoom] = useState(7)
-
-  const [selected, setSelected] = useState();
+  const [mapItems, setMapItems] = useState([]);
+  const [popover, setPopover] = useState();
+  const [updatePosition, setUpdatePosition] = useState();
+  const [popoverClosing, setPopoverClosing] = useState(false);
+  const [zoom, setZoom] = useState(7);
 
   const mapCont = useRef(null);
   const mapRef = useRef(null);
 
-
-
-
-
-
-  function tryChange(e) {
-    if (mapContext.referringFilter.indexOf(e) === -1) {
-      let newPull = [...mapContext.referringFilter, e]
-      setTimeout(() => {
-        mapContext.changeReferringFilter(newPull)
-      },500)
-
-    }
-    else {
-      let newPull = mapContext.referringFilter.filter(a => a !== e)
-      setTimeout(() => {
-      mapContext.changeReferringFilter(newPull)
-    },100)
-    }
-  }
+  useEffect(() => {
+    let newItems = items.filter((f) => mapContext.referringFilter.includes(f.type));
+    setMapItems(newItems);
+  }, [mapContext.referringFilter, items]);
 
   useEffect(() => {
-    setFilter(mapContext.referringFilter)
-  },[mapContext.referringFilter])
-
-
-  useEffect(() => {
-    if (isLoaded === true) {
-      let newItems = items.filter(f => filter.includes(f.type));
-      setMapItems(newItems)
+    if (mapContext.referringFeature) {
+      setPopover(mapContext.referringFeature);
+      setUpdatePosition(mapContext.referringFeature);
     }
-    else {}
-  },[filter, isLoaded])
-
-
+  }, [mapContext.referringFeature]);
 
   function handleItemClick(item) {
-    setSelected(item.id)
-    setPopover(item)
-    setUpdatePosition(item)
-    setTimeout(() => {
-    mapContext.changeReferringFeature(item)
-    },500)
+    setPopover(item);
+    setUpdatePosition(item);
+    mapContext.changeReferringFeature(item);
   }
-
-
-
 
   function close() {
-    setPopoverClosing(true)
-    setTimeout(() => setPopover(undefined), 500);
-    setTimeout(() => setUpdatePosition(), 500);
-    setTimeout(() => setPopoverClosing(false), 500);
-    setTimeout(() => setSelected(undefined), 0);
+    setPopoverClosing(true);
+    setTimeout(() => {
+      setPopover(undefined);
+      setUpdatePosition();
+      setPopoverClosing(false);
+      mapContext.changeReferringFeature(null);
+    }, 500);
   }
 
-  useEffect(() => {
-    if (isLoaded) {
-      if (mapContext.referringFeature === false) {
-        setTimeout(() => {
-            let newPull = [...mapContext.referringFilter, 'munro']
-            mapContext.changeReferringFilter(newPull)
-        },500)
-      }
-      else {
-        setPopover(mapContext.referringFeature)
-        setUpdatePosition(mapContext.referringFeature)
-        setFilter(mapContext.referringFilter)
-        setTimeout(() => {
-          setSelected(mapContext.referringFeature.MapFeatureID)
-        },500)
-      }
-    }
-  },[isLoaded])
-
-
-
-     if (typeof window !== 'undefined') {
-      return (
+  return (
       <myContext.Consumer>
-        {context => (
-        <>
-      <Div100vh>
-        <div ref={mapCont} className={leafletMapStyles.top_container}>
-        <div ref={mapCont} className={leafletMapStyles.container}>
+        {() => (
+            <>
+              <Div100vh>
+                <div ref={mapCont} className={leafletMapStyles.top_container}>
+                  <div ref={mapCont} className={leafletMapStyles.container}>
+                    <Search popover={popover} dropdown={mapItems} onItemClick={handleItemClick} />
+                    <CheckBoxes />
+                    {popover ? <Popover closing={popoverClosing} close={close} item={popover} extraItems={null} /> : null}
 
-        <Search popover={popover} dropdown={mapItems} onItemClick={handleItemClick}/>
-
-
-            {/*<button onClick={() => fullScreenToggle(mapCont)}>fullScreen</button>*/}
-            <CheckBoxes filter={filter} tryChange={tryChange}/>
-            {popover ? <Popover closing={popoverClosing} close={close} item={popover} /> : null}
-
-          {isLoaded ?
-          <Map  ref={mapRef} maxZoom={15} zoom={7} center={[57.5,-4]} className={popover ? 'active' : null}
-          onzoomend={() => setZoom(mapRef.current.leafletElement.getZoom())}
-          >
-
-            <TileLayer url='https://{s}.tile.osm.org/{z}/{x}/{y}.png' />
-            <PointsLayer close={close} selected={selected} goPopover={handleItemClick} mapItems={mapItems}/>
-            {/* Map code goes here */}
-            <Legend zoom={zoom} updatePosition={updatePosition}/>
-
-          </Map>
-          : <div className={leafletMapStyles.leaflet_container_loading} Style={"background: #ddd"}>
-              <div class="sk-folding-cube">
-              <div class="sk-cube1 sk-cube"></div>
-              <div class="sk-cube2 sk-cube"></div>
-              <div class="sk-cube4 sk-cube"></div>
-              <div class="sk-cube3 sk-cube"></div>
-              </div>
-            </div>
-        }
-        </div>
-        </div>
-      </Div100vh>
-      </>
-
-    )}
-    </myContext.Consumer>
-  )
-    }
-    else {
-    return null
-  }
+                    <Map
+                        ref={mapRef}
+                        maxZoom={15}
+                        zoom={7}
+                        center={[57.5, -4]}
+                        className={popover ? 'active' : null}
+                        onzoomend={() => setZoom(mapRef.current.leafletElement.getZoom())}
+                    >
+                      <TileLayer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+                      <PointsLayer close={close} goPopover={handleItemClick} mapItems={mapItems} />
+                      <Legend zoom={zoom} updatePosition={updatePosition} />
+                    </Map>
+                  </div>
+                </div>
+              </Div100vh>
+            </>
+        )}
+      </myContext.Consumer>
+  );
 }
 
-export default LeafletMap
+export default LeafletMap;

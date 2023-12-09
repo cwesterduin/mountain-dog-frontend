@@ -34,17 +34,8 @@ function PointMarker(props) {
   const markerRef = useRef(null)
   const mapContext = useContext(myContext);
 
-  function mapInfo(a) {
-  if (mapContext.referringFilter.indexOf(props.item.type) === -1) {
-      let newPull = [...mapContext.referringFilter, props.item.type]
-      mapContext.changeReferringFilter(newPull)
-    }
-    mapContext.changeReferringFeature(props.item)
-    if (a === null) {}
-    else {
-    navigate(`#A-${a}`)
-  }
-  }
+
+
 
   // useEffect(() => {
   //   if (markerRef) {
@@ -57,7 +48,6 @@ function PointMarker(props) {
     position={[props.item.coordinate[0],props.item.coordinate[1]]}
     icon={icons[props.item.type]}
     class={"active"}
-    onClick={() => mapInfo(props.item.id)}
     >
       <Tooltip permanent direction={"bottom"} opacity={"0.8"}>
         <b>{props.item.name}</b>
@@ -99,7 +89,6 @@ return null
 
 function LeafletMap(props) {
 
-  const [mapItems, setMapItems] = useState([])
   const [center, setCenter] = useState([0,0])
 
   let coordinates = props.coordinates

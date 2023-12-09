@@ -4,7 +4,7 @@ import Layout from '../components/layout'
 import TripMap from '../components/map/TripMap'
 import eventStyles from './eventStyles.module.css'
 import pageStyles from "../pages/pageStyles.module.css"
-import url from "../helpers/url"
+import { ordinal_suffix_of } from "../helpers/date.js"
 
 import { DiscussionEmbed } from "disqus-react"
 
@@ -27,25 +27,10 @@ function Event({pageContext: {item, mapItems}}) {
 
   let dateParts, jsDate = false
   const monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
-  let arr = []
   if (isLoaded !== false) {
      dateParts = item.events.sort((a, b) => a.date.localeCompare(b.date))[0].date.split("-");
      jsDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
    }
-   function ordinal_suffix_of(i) {
-    var j = i % 10,
-        k = i % 100;
-    if (j == 1 && k != 11) {
-        return i + "st";
-    }
-    if (j == 2 && k != 12) {
-        return i + "nd";
-    }
-    if (j == 3 && k != 13) {
-        return i + "rd";
-    }
-    return i + "th";
-}
 
   const events = item.events.sort((a, b) => a.date.localeCompare(b.date)).map((item,index) =>
     <>
