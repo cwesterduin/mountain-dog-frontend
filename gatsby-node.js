@@ -41,7 +41,7 @@ exports.createPages = async ({
 
   async function createMap() {
     let mf = await mapFeatures()
-    let emf = await eventMapFeatures()
+    mf = mf.map(m => ({...m, coordinate: JSON.parse(m.coordinate), events: JSON.parse(m.events)}))
     createPage({
           path: `/map`,
           component: require.resolve('./src/templates/mapPage.js'),

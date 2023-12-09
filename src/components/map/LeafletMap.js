@@ -23,7 +23,7 @@ function PointMarker(props) {
   const markerRef = useRef(null)
 
     function clickEvent(e) {
-     if (props.selected === e.id) {
+      if (props.selected === e.id) {
            markerRef.current.leafletElement._icon.classList.remove('active')
            markerRef.current.leafletElement.closePopup()
            props.close()
@@ -128,20 +128,8 @@ function LeafletMap(props) {
 
 
 
-  function goPopover(e,item) {
-    setTimeout(() => {
-    setPopover(item)
-    setUpdatePosition(item)
-  },500)
-    setSelected(item.MapFeatureID)
-     // mapRef.current.leafletElement.closePopup();
-     // document.getElementsByClassName('leaflet-marker-icon').classList.remove('active')
-     // e.target._icon.classList.add('active')
-  }
-
-
   function handleItemClick(item) {
-    setSelected(item.MapFeatureID)
+    setSelected(item.id)
     setPopover(item)
     setUpdatePosition(item)
     setTimeout(() => {
@@ -195,7 +183,7 @@ function LeafletMap(props) {
 
             {/*<button onClick={() => fullScreenToggle(mapCont)}>fullScreen</button>*/}
             <CheckBoxes filter={filter} tryChange={tryChange}/>
-            {/*{popover ? <Popover closing={popoverClosing} close={close} item={popover} extraItems={extraItems} /> : null}*/}
+            {popover ? <Popover closing={popoverClosing} close={close} item={popover} /> : null}
 
           {isLoaded ?
           <Map  ref={mapRef} maxZoom={15} zoom={7} center={[57.5,-4]} className={popover ? 'active' : null}

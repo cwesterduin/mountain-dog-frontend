@@ -40,7 +40,7 @@ function EventListNumbers(props) {
         <EventNumber checkActive={(a) => setActive(a)} item={props.item} a={a} index={index} />
       )
       }
-      {active !== false ? active === (props.trip.length - 1) ? <span className={eventStyles.deadLink}>{' >'}</span> : <Link to={`/events/${sortedTrips[active + 1].id}`}>{'>'}</Link> : null}
+      {active !== false ? active === (props.trip.events.length - 1) ? <span className={eventStyles.deadLink}>{' >'}</span> : <Link to={`/events/${sortedTrips[active + 1].id}`}>{'>'}</Link> : null}
       </>
     )}
     else {return null}
@@ -70,12 +70,12 @@ function Event({pageContext: {
         .sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
         .map(item =>
             'image' === 'image' ?
-                <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline:solid green 2px' : null} className={eventStyles.image_big_cont}>
+                <div id={`A-${item.FeatureAnchor}`} className={eventStyles.image_big_cont}>
                     <GridImage Path={item.path} />
                     <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null} (ID:{item.id})</div>
                 </div>
                 : item.type === 'panorama' ?
-                    <div id={`A-${item.FeatureAnchor}`} Style={window.location.hash === `#A-${item.FeatureAnchor}` ? 'outline: solid green 2px; width: 100%' : 'width:100%'} className={eventStyles.image_big_cont}>
+                    <div id={`A-${item.FeatureAnchor}`} className={eventStyles.image_big_cont}>
                         <GridImage Path={item.path} />
                         <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null}</div>
                     </div>

@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
 import Layout from '../components/layout'
-import SlideShow from '../components/SlideShow'
 import GridImage from '../components/GridImage'
 import Image from '../components/Image'
 import Div100vh from 'react-div-100vh'
@@ -53,9 +52,7 @@ export default function Home() {
                 <p Style={"text-align:center; margin:1em 0 "}>Alfie's portrait</p>
             </div>
           </div>
-
-          {/*<SlideShow/>*/}
-          </div>
+         </div>
       </div>
 
     </Layout>

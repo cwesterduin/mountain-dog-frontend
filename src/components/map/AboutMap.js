@@ -35,11 +35,11 @@ function PointMarker(props) {
   const mapContext = useContext(myContext);
 
   function mapInfo(a) {
-  /*  if (mapContext.referringFilter.indexOf(props.item.Type) === -1) {
-      let newPull = [...mapContext.referringFilter, props.item.Type]
+  if (mapContext.referringFilter.indexOf(props.item.type) === -1) {
+      let newPull = [...mapContext.referringFilter, props.item.type]
       mapContext.changeReferringFilter(newPull)
     }
-    mapContext.changeReferringFeature(props.item) */
+    mapContext.changeReferringFeature(props.item)
     if (a === null) {}
     else {
     navigate(`#A-${a}`)
@@ -79,7 +79,6 @@ function PointsLayer(props) {
 function Setter(props) {
   const { map } = useLeaflet();
   useEffect(() => {
-    console.log(props)
   if (props.coordinates == "false" || props.coordinates.length <= 2) {
     let originLatTopLeft = [props.mapItems[0].coordinate[0] - 0.005, props.mapItems[0].coordinate[1] - 0.005]
     let originLatBottomRight = [props.mapItems[0].coordinate[0] + 0.005, props.mapItems[0].coordinate[1] + 0.005]
