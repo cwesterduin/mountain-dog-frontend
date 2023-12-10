@@ -13,13 +13,12 @@ function Item(props) {
               to={props.to !== null ? `/events/${props.to}` : null} className={tripStyles.item_cont}
               Style={hover ? 'border:solid .1em #333' : null}
         >
-            <img
+            <Image
                 className={tripStyles.item_cont_img}
-                style={hover ? {position: "default", borderBottom: 'solid .1em #333'} : {
-                    position: "default",
-                    borderBottom: 'solid .1em transparent'
+                imgStyle = {{
+                    objectFit : 'cover'
                 }}
-                src={props.filename}
+                filename={props.filename.substring(props.filename.indexOf('/images/') + '/images/'.length)}
             />
             <h2>{props.text}</h2>
         </Link>

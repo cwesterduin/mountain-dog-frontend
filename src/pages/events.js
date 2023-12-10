@@ -32,13 +32,11 @@ return (
         <Item text={"favourites"} to={"events/top"} filename={"Munro_Walks/057/Photo_8.jpeg"}/>
         <Item text={"multi-day"} to={"events/trips"} filename={"Munro_Walks/011/Photo_12.jpg"}/>
         <Item text={"munros"} to={"events/munro"} filename={"Munro_Walks/011/Photo_9.jpg"}/>
-        <Item text={"corbetts"} to={"events/corbett"} filename={"Corbetts/Goatfell.jpeg"}/>
+        <Item text={"corbetts"} to={"events/corbett"} filename={"Corbetts/Corbett_054/IMG_1371.jpg"}/>
         <Item text={"mountain biking"} to={"events/bike"} filename={"Bike/Glentress_Winter.jpg"}/>
         <Item text={"kayaking"} to={"events/kayak"} filename={"Kayak/Gruinard_Bay/gruinard_bay-1.jpg"}/>
         <Item text={"walks"} to={"events/walk"} filename={"Walks/Mull_Carsaig/Arches_Map_Feature.jpg"}/>
         <Item text={"swimming"} to={"events/swim"} filename={"Swim/Sandaig/Photo_1.JPG"}/>
-        <Item text={"summer gallery"} to={"gallery/summer"} filename={"Munro_Walks/104/Ben_More_3.jpg"}/>
-        <Item text={"winter gallery"} to={"gallery/winter"} filename={"View/Dog_Falls/Photo_4.jpeg"}/>
       </div>
     </div>
   </Layout>

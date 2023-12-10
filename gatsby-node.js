@@ -27,11 +27,6 @@ const mapFeatures = async () => {
   .then(res => res.json())
 };
 
-const eventMapFeatures = async () => {
-  return fetch(url + "eventMapFeatures")
-  .then(res => res.json())
-};
-
 exports.createPages = async ({
   actions: {
     createPage
@@ -85,17 +80,17 @@ exports.createPages = async ({
   async function createTrips() {
     for (let item of trips) {
       let tripData = await getOneTrip(item.id)
-      let mapFeatures = []
+      let mapItems = []
       for (let event of tripData.events) {
         let tripEventData = await getOneEventData(event.id)
-        mapFeatures.push(tripEventData.mapFeatures)
+        mapItems.push(tripEventData)
       }
       createPage({
             path: `/trips/${item.id}`,
             component: require.resolve('./src/templates/trip.js'),
             context: {
               item: tripData,
-              mapItems: mapFeatures
+              mapItems: mapItems
             }
           }
       );
@@ -104,7 +99,6 @@ exports.createPages = async ({
   await createTrips()
   eventTypes.forEach((type,index) => {
     let item = events.filter(a => a.descriptionId.toLowerCase().startsWith(type)).sort((a, b) => (a.date > b.date) ? -1 : 1)
-    console.log(item)
     createPage({
       path: `/events/${type}`,
       component: require.resolve('./src/templates/subEvent.js'),
@@ -123,8 +117,17 @@ exports.createPages = async ({
       filterTrips
     }
   });
-  let topID = [113,11,105,80,92,96,103,109,120]
-  let item = events.filter(a => topID.indexOf(a.EventID) != -1).sort((a, b) => (a.Date > b.Date) ? -1 : 1)
+  let topID = [
+      "48059bdb-b365-11ec-9c02-026bb6510df8",
+    "47d46200-b365-11ec-9c02-026bb6510df8",
+    "4804c959-b365-11ec-9c02-026bb6510df8",
+    "4803f4e1-b365-11ec-9c02-026bb6510df8",
+    "48033db3-b365-11ec-9c02-026bb6510df8",
+    "48030747-b365-11ec-9c02-026bb6510df8",
+    "48023b3e-b365-11ec-9c02-026bb6510df8",
+    "4801da32-b365-11ec-9c02-026bb6510df8",
+    "4800c40f-b365-11ec-9c02-026bb6510df8"]
+  let item = events.filter(a => topID.indexOf(a.id) != -1).sort((a, b) => (a.date > b.date) ? -1 : 1)
   createPage({
     path: `/events/top`,
     component: require.resolve('./src/templates/subEvent.js'),

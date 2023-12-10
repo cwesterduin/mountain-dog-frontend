@@ -21,7 +21,7 @@ export default function Home() {
           objectFit: "cover",
           objectPosition: "40% 35%"
       }}
-      filename={'Favourites/test.jpg'}
+      filename={'cover.png'}
     />
     </div>
     </div>

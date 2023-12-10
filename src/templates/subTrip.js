@@ -7,14 +7,17 @@ import tripStyles from "../pages/tripStyles.module.css"
 
 function Item(props) {
   const [hover, setHover] = useState(false)
+    console.log(props)
   return(
     <Link onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} to={props.to !== null ? `/trips/${props.to}` : null} className={tripStyles.item_cont}
     Style={hover ? 'border:solid .1em #333' : null}
     >
-      <img
-        className={tripStyles.item_cont_img}
-        style={hover ? {position:"default", borderBottom: 'solid .1em #333'} : {position:"default", borderBottom: 'solid .1em transparent'}}
-        src={"https://alfie76589.s3.eu-west-2.amazonaws.com/" + props.filename}
+      <Image
+          className={tripStyles.item_cont_img}
+          imgStyle = {{
+            objectFit : 'cover'
+          }}
+          filename={props.filename.substring(props.filename.indexOf('/images/') + '/images/'.length)}
       />
       <h2>{props.text}</h2>
     </Link>

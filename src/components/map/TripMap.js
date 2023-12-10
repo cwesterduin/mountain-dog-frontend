@@ -33,20 +33,16 @@ function go(index) {
 }
 
 function PointMarker(props) {
-  var myIcon = L.divIcon({className: 'html_icon', html:`<div>${props.index}</div>`});
-  const markerRef = useRef(null)
-  useEffect(() => {
-    markerRef.current.leafletElement._icon.classList.add('active')
-  },[])
+  console.log(props)
+  let myIcon = L.divIcon({className: 'html_icon', html:`<div>${props.index}</div>`});
   return (
     <Marker
-    ref={markerRef}
-    position={[props.item.coordinate[0],props.item.coordinate[1]]}
+    position={[props.item.mapFeatures[0].coordinate[0],props.item.mapFeatures[0].coordinate[1]]}
     icon={myIcon}
-    onClick={(e) => go(props.item.event)}
+    onClick={(e) => go(props.item.id)}
     >
       <Tooltip permanent direction={"bottom"} opacity={"0.8"}>
-        <b>{props.item.EventName}</b>
+        <b>{props.item.name}</b>
       </Tooltip>
     </Marker>
   )
@@ -55,7 +51,7 @@ function PointMarker(props) {
 
 function PointsLayer(props) {
   return (
-    props.mapItems.map((item,index) =>
+    props.mapItems.sort((a, b) => a.date.localeCompare(b.date)).map((item,index) =>
       <PointMarker
         item={item}
         index={index + 1}
@@ -96,10 +92,12 @@ function LeafletMap(props) {
 
   const [crs,setCrs] = useState()
 
+  const mapFeatures = props.mapItems.map(m => m.mapFeatures).flat()
+
   useEffect(() => {
     if (props.mapItems[0] === undefined) {}
     else {
-      setCenter([props.mapItems[0].coordinate[0], props.mapItems[0].coordinate[1]])
+      setCenter([mapFeatures[0].coordinate[0], mapFeatures[0].coordinate[1]])
     }
   },[props.mapItems])
 
@@ -131,9 +129,9 @@ function LeafletMap(props) {
 
             <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Leisure_27700/{z}/{x}/{y}.png?key=6oLE6u9HjlkdNwxYkeTDp8wEa9dBq0cs'/>
 
-            <Setter mapItems={props.mapItems} gpx={gpx ? gpx : props.mapItems.length > 1 ? props.mapItems.map(a => [a.coordinate[0],a.coordinate[1]]) : 'false'} />
+            <Setter mapItems={props.mapItems} gpx={gpx ? gpx : mapFeatures.length > 1 ? mapFeatures.map(a => [a.coordinate[0],a.coordinate[1]]) : 'false'} />
 
-            <PointsLayer mapItems={props.mapItems}/>
+            <PointsLayer mapItems={props.mapItems} events={props.events}/>
             {/* Map code goes here */}
           </Map>
           : <div className={leafletMapStyles.leaflet_container_loading} Style={"background: #ddd"}>loading...</div>

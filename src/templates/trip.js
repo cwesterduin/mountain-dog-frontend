@@ -10,8 +10,10 @@ import { DiscussionEmbed } from "disqus-react"
 
 
 function Event({pageContext: {item, mapItems}}) {
-    mapItems = mapItems.flat()
-  const [items, setItems] = useState([])
+    const mapFeatures = mapItems.map(m => m.mapFeatures).flat()
+
+
+    const [items, setItems] = useState([])
   const [gpx, setGpx] = useState(null)
 
 
@@ -41,7 +43,7 @@ function Event({pageContext: {item, mapItems}}) {
     </>
   )
 
-  const munros = mapItems.filter(item => item.type === 'munro').map(item =>
+  const munros = mapFeatures.filter(item => item.type === 'munro').map(item =>
     <span className={eventStyles.munro_item}>{item.name}</span>
   )
 
@@ -69,7 +71,7 @@ function Event({pageContext: {item, mapItems}}) {
 
           <div className={eventStyles.map_cont}>
             <div className={eventStyles.map_sub_cont}>
-              <TripMap isLoaded={isLoaded} mapItems={mapItems} gpx={gpx} />
+              <TripMap isLoaded={isLoaded} mapItems={mapItems} events={item.events} gpx={gpx} />
             </div>
           </div>
 
@@ -85,13 +87,14 @@ function Event({pageContext: {item, mapItems}}) {
               <div><b>Distance travelled: </b>{totalDistance}km</div>
               <div><b>Elevation gained: </b>{totalElevation}m</div>
           </div>
+              <p></p>
+              <div>{events}</div>
+
           </div>
 
 
         </div>
         </div>
-
-        <div>{events}</div>
 
         <div className={eventStyles.comment_cont}><DiscussionEmbed {...disqusConfig} /></div>
     </div>

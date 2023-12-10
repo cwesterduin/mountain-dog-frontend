@@ -1,12 +1,14 @@
 import React from "react"
 import Img from "gatsby-image"
-import { useStaticQuery, graphql } from "gatsby"
+import {useStaticQuery, graphql} from "gatsby"
+import {useImageZoom} from "react-medium-image-zoom";
 
 function Image(props) {
 
-  const { filename, type = 'default', alt, imgStyle, style, className } = props;
+    const {filename, type = 'default', alt, imgStyle, style, className} = props;
+    const {ref} = useImageZoom({zoomMargin: 24})
 
-  const images = useStaticQuery(graphql`
+    const images = useStaticQuery(graphql`
     query ImageQuery {
       data: allFile {
         edges {
@@ -24,24 +26,27 @@ function Image(props) {
     }
   `);
 
-  const image = images.data.edges.find(n => {
-    return n.node.relativePath.includes(filename);
-  });
+    const image = images.data.edges.find(n => {
+        return n.node.relativePath.includes(filename);
+    });
 
-  if (!image) {
-    return null;
-  }
+    if (!image) {
+        return null;
+    }
 
-  return (
-    <Img loading="lazy"
-    className={className}
-    alt={alt}
-    style={style}
-    imgStyle={imgStyle}
-    fluid={{
-      ...image.node[type].fluid,
-    }} />
-  )
+
+    return (
+        <div ref={ref}>
+            <Img loading="lazy"
+                 className={className}
+                 alt={alt}
+                 style={style}
+                 imgStyle={imgStyle}
+                 fluid={{
+                     ...image.node[type].fluid,
+                 }}/>
+        </div>
+    )
 }
 
 export default Image

@@ -15,6 +15,8 @@ import { DiscussionEmbed } from "disqus-react"
 
 import { myContext } from '../components/PageContext';
 import * as L from "leaflet";
+import Image from "../components/Image";
+import tripStyles from "../pages/tripStyles.module.css";
 
 
 function EventNumber(props) {
@@ -71,20 +73,26 @@ function Event({pageContext: {
         .map(item =>
             'image' === 'image' ?
                 <div id={`A-${item.FeatureAnchor}`} className={eventStyles.image_big_cont}>
-                    <GridImage Path={item.path} />
-                    <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null} (ID:{item.id})</div>
+                    <Image
+                        className={tripStyles.item_cont_img}
+                        imgStyle = {{
+                            objectFit : 'cover'
+                        }}
+                        filename={item.path.substring(item.path.indexOf('/images/') + '/images/'.length)}
+                    />
+                    <div className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
                 </div>
                 : item.type === 'panorama' ?
                     <div id={`A-${item.FeatureAnchor}`} className={eventStyles.image_big_cont}>
                         <GridImage Path={item.path} />
-                        <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null}</div>
+                        <div className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
                     </div>
                     :
                     <div className={eventStyles.image_big_contB}>
                         <div className={eventStyles.video_cont}>
                             <iframe className={eventStyles.video} src={`https://www.youtube.com/embed/${item.path}`} frameborder="0" allowFullScreen="0" controls="0"></iframe>
                         </div>
-                        <div className={eventStyles.image_big_cont_description}>{item.order}. {item.description ? item.description : null}</div>
+                        <div className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
                     </div>
         )
 
@@ -122,7 +130,7 @@ function Event({pageContext: {
 
 const mapContext = useContext(myContext);
 
-function munroContext(item) {
+function munroContext(item) {console.log(item)
   mapContext.changeReferringFeature(item)
   let newPull = [...mapContext.referringFilter, item.type]
   mapContext.changeReferringFilter(newPull)

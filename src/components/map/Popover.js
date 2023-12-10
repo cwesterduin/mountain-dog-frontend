@@ -4,6 +4,8 @@ import { useImageZoom } from 'react-medium-image-zoom';
 import leafletMapStyles from "./leafletMapStyles.module.css";
 import exclamation from '../../../static/exclamation.svg';
 import { makeDate } from '../../helpers/date.js';
+import Image from "../Image";
+import tripStyles from "../../pages/tripStyles.module.css";
 
 function EventDetails({ event }) {
     return (
@@ -52,7 +54,14 @@ function Popover(props) {
                 </button>
             </div>
             <div ref={ref} className={`${leafletMapStyles.popover_image_cont}`}>
-                <img src={`https://alfie76589.s3.eu-west-2.amazonaws.com/${props.item.path}`} alt={props.item.name} />
+
+                <Image
+                    className={tripStyles.item_cont_img}
+                    imgStyle = {{
+                        objectFit : 'cover'
+                    }}
+                    filename={props.item.path ? (props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length)) : "Favourites/test.png"}
+                />
             </div>
             <div className={leafletMapStyles.popover_title_cont}>
                 <div className={leafletMapStyles.popover_title}>
