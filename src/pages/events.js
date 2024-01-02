@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import Image from '../components/Image'
@@ -9,7 +9,7 @@ function Item(props) {
   const [hover, setHover] = useState(false)
   return(
     <Link onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} to={props.to !== null ? `/${props.to}` : null} className={tripStyles.item_cont}
-    Style={hover ? 'border:solid .1em #333' : null}
+    style={hover ? {border:"solid .1em #333"} : null}
     >
       <Image
         className={tripStyles.item_cont_img}

@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from './Image'
 import { useImageZoom } from 'react-medium-image-zoom'
 
 import eventStyles from "../templates/eventStyles.module.css"

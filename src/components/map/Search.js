@@ -10,8 +10,6 @@ function Search(props) {
   const [dropDownItems, setDropDownItems] = useState(props.dropdown)
 
   const searchInput = useRef(null);
-  const searchListItem = useRef(null);
-
 
 
   useEffect(() => {setDropDownItemsConst(props.dropdown)},[props.dropdown])
@@ -20,22 +18,25 @@ function Search(props) {
   function SearchDropdownItems(props) {
     if (dropDownItems.length > 0) {
     return (
-      dropDownItems.sort((a, b) => a.name.localeCompare(b.name)).map(item =>
-        <li className={"searchItem"}
+      dropDownItems.sort((a, b) => a.name.localeCompare(b.name)).map((item, index) =>
+        <li
+            key={index}
+            className={"searchItem"}
             onFocus={props.onFocus}
             onBlur={props.onBlur}
             onClick={() => props.onClick(item)}
             onKeyPress={(e) => e.key === 'Enter' ? props.onClick(item) : null}
-            tabindex="0" Style={"font-size: 1em; padding: 4px 4px"}>
+            tabIndex={0} style={{fontSize: "1em", padding: "4px 4px"}}>
           <img
-            Style={"height:16px; width:16px; margin-right: .1em"}
+              alt={"checkbox symbol"}
+              style={{height:"16px", width:"16px", marginRight: ".1em"}}
             src={keyIcons[item.type]}/>
             {item.name}
         </li>
     )
   )
 }
-  else {return <span Style={"font-size: 1em; padding: 4px 4px"}>no results...</span>}
+  else {return <span style={{fontSize: "1em", padding: "4px 4px"}}>no results...</span>}
   }
 
 
@@ -103,7 +104,7 @@ function Search(props) {
       className="search"
       placeholder="search map..."
       />
-    <ul className={"searchItem"} tabindex={"-1"} Style={hidden ? "display:none" : "display:block"}>
+    <ul className={"searchItem"} tabIndex={-1} style={hidden ? {display:"none"} : {display:"block"}}>
     <SearchDropdownItems onClick={e => handleClick(e)}  onBlur={e => setBlurChild(e)} />
     </ul>
     </div>

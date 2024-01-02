@@ -11,7 +11,6 @@ export default function Home() {
   return (
     <Layout>
 
-    {/* <SlideShow/> */}
     <Div100vh>
     <div className="contB">
     <div className="imageContB">
@@ -46,10 +45,15 @@ export default function Home() {
 
               <p>And enjoy Alfie’s <Link to={"/events/top"}>Favourites page</Link> to see the adventures that we have had along the way.</p>
 
-                <div Style={"margin:0 auto; min-width: 80%"} className={eventStyles.image_big_cont}>
-                  <GridImage Path={'https://alfie76589.s3.eu-west-2.amazonaws.com/images/Favourites/Alfie_Portrait.jpeg'} />
+                <div style={{margin: "0 auto", minWidth: "80%"}} className={eventStyles.image_big_cont}>
+                  <Image
+                      style={{position:"default"}}
+                      imgStyle = {{
+                      }}
+                      filename={'Favourites/Alfie_Portrait.jpeg'}
+                  />
                 </div>
-                <p Style={"text-align:center; margin:1em 0 "}>Alfie's portrait</p>
+                <p style={{textAlign:"center", margin:"1em 0"}}>Alfie's portrait</p>
             </div>
           </div>
          </div>

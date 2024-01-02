@@ -65,7 +65,7 @@ function LeafletMap({ items }) {
   const [mapItems, setMapItems] = useState([]);
   const [popover, setPopover] = useState();
   const [updatePosition, setUpdatePosition] = useState();
-  const [popoverClosing, setPopoverClosing] = useState(false);
+  const [popoverClosing] = useState(false);
   const [zoom, setZoom] = useState(7);
 
   const mapCont = useRef(null);

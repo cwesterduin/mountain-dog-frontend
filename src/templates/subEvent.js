@@ -1,17 +1,16 @@
 import React, {useState} from "react"
 import {Link} from 'gatsby'
-import Layout from '../components//layout'
+import Layout from '../components/layout'
 import Image from '../components/Image'
 import pageStyles from "../pages/pageStyles.module.css"
 import tripStyles from "../pages/tripStyles.module.css"
-import subTrip from "./subTrip";
 
 function Item(props) {
     const [hover, setHover] = useState(false)
     return (
         <Link onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
               to={props.to !== null ? `/events/${props.to}` : null} className={tripStyles.item_cont}
-              Style={hover ? 'border:solid .1em #333' : null}
+              tyle={hover ? {border:"solid .1em #333"} : null}
         >
             <Image
                 className={tripStyles.item_cont_img}
@@ -26,8 +25,8 @@ function Item(props) {
 }
 
 function SubEvent({pageContext: {item}}) {
-    const munroList = item.map(subItem =>
-        <Item to={subItem.id} text={`${
+    const munroList = item.map((subItem, index) =>
+        <Item key={index} to={subItem.id} text={`${
             subItem.name}`} desc={subItem.description} filename={subItem.path ? subItem.path : 'primary.jpeg'}/>
     )
 
