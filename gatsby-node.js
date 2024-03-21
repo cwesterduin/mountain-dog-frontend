@@ -135,28 +135,6 @@ exports.createPages = async ({
       item
     }
   });
-  // let winter = ["01","02","03","04","11","12"]
-  // let summer = ["05","06","07","08","09","10"]
-  // let seasons = ["summer","winter"]
-  // let mediaDate = await getMediaDate()
-  // mediaDate = mediaDate.results
-  // seasons.forEach((season,index) => {
-  //   let items
-  //   if (season === "summer") {
-  //      items = mediaDate.filter(a => a.Type === 'image').filter(a => summer.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
-  //   }
-  //   else {
-  //      items = mediaDate.filter(a => a.Type === 'image').filter(a => winter.indexOf(a.Date.slice(5,7)) < 0 ? null : a)
-  //    }
-  //   createPage({
-  //     path: `/gallery/${season}`,
-  //     component: require.resolve('./src/templates/gallery.js'),
-  //     context: {
-  //       items
-  //     }
-  //     }
-  //   );
-  // });
 };
 
 

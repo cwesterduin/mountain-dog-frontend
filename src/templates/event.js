@@ -18,35 +18,28 @@ import tripStyles from "../pages/tripStyles.module.css";
 import {ordinal_suffix_of} from "../helpers/date";
 
 
-function EventNumber(props) {
-    const [active] = useState(props.a.id === props.item.id)
-    useEffect(() => {
-        props.checkActive(props.index)
-    }, [active, props])
-    return (
-        <Link className={eventStyles.event_numbers}
-              style={props.a.id === props.item.id ? {textDecoration:"underline"} : null}
-              to={`/events/${props.a.id}`}>{props.index + 1}</Link>
-    )
-}
-
 function EventListNumbers(props) {
-    const [active, setActive] = useState(false)
     const sortedTrips = props.trip.events.sort((a, b) => a.date.localeCompare(b.date))
-    if (props.trip) {
+    const currentIndex = sortedTrips.findIndex(s => s.id === props.item.id)
+    const prevItem = sortedTrips[currentIndex - 1]
+    const nextItem = sortedTrips[currentIndex + 1]
+    if (sortedTrips) {
         return (
             <>
-                {active !== false ? active === 0 ? <span className={eventStyles.deadLink}>{'< '}</span> :
-                    <Link to={`/events/${sortedTrips[active - 1].id}`}>{'<'}</Link> : null}
+                {currentIndex === 0 ? <span className={eventStyles.deadLink}>{'< '}</span> :
+                    <Link to={`/events/${prevItem.id}`}>{'<'}</Link>}
                 {
-                    sortedTrips.map((a, index) =>
-                        <EventNumber checkActive={(a) => setActive(a)} item={props.item} a={a} key={index}
-                                     index={index}/>
+                    sortedTrips.map((a, index) => {
+                            return <Link className={eventStyles.event_numbers}
+                                         key={index}
+                                         style={a.id === props.item.id ? {textDecoration: "underline"} : null}
+                                         to={`/events/${a.id}`}>{index + 1}</Link>
+                        }
                     )
                 }
-                {active !== false ? active === (props.trip.events.length - 1) ?
+                {currentIndex === (props.trip.events.length - 1) ?
                     <span className={eventStyles.deadLink}>{' >'}</span> :
-                    <Link to={`/events/${sortedTrips[active + 1].id}`}>{'>'}</Link> : null}
+                    <Link to={`/events/${nextItem.id}`}>{'>'}</Link>}
             </>
         )
     } else {
@@ -65,6 +58,8 @@ function Event({
                    }
                }) {
 
+    console.log(media)
+
 
     const id = `event-${item.id}`
     const disqusConfig = {
@@ -72,21 +67,33 @@ function Event({
         config: {identifier: id},
     }
 
-
     const images = media
-        .sort((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
-        .map((item, index) =>
-            <div key={index} className={eventStyles.image_big_cont}>
-                <Image
-                    className={tripStyles.item_cont_img}
-                    imgStyle={{
-                        objectFit: 'cover'
-                    }}
-                    filename={item.path.substring(item.path.indexOf('/images/') + '/images/'.length)}
-                />
-                <div
-                    className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
-            </div>
+        .sort((a, b) => (a.sortOrder > b.sortOrder) ? 1 : ((b.sortOrder > a.sortOrder) ? -1 : 0))
+        .map((item, index) => {
+                if (item.fileType === "image") {
+                    return <div key={index} className={eventStyles.image_big_cont}>
+                        <Image
+                            className={tripStyles.item_cont_img}
+                            imgStyle={{
+                                objectFit: 'cover'
+                            }}
+                            filename={item.path.substring(item.path.indexOf('/images/') + '/images/'.length)}
+                        />
+                        <div
+                            className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
+                    </div>
+                } else if (item.fileType === "video") {
+                    return <div key={index} className={eventStyles.image_big_cont}>
+                        <video style={{width: "100%", height: "100%"}} controls>
+                            <source src={item.path}
+                                    type="video/mp4"/>
+                            Your browser does not support the video tag.
+                        </video>
+                        <div
+                            className={eventStyles.image_big_cont_description}>{item.description ? item.description : null}</div>
+                    </div>
+                }
+            }
         )
 
 
@@ -98,8 +105,9 @@ function Event({
         for (let i = 0; i < eventData.rating; i++) {
             arr.push(i)
         }
-    rating = arr.map((item, index) => <img key={index} style={{width: "1em", height: "1em", objectFit: "scale-down"}} src={star}
-                                  alt={"star"}/>)
+    rating = arr.map((item, index) => <img key={index} style={{width: "1em", height: "1em", objectFit: "scale-down"}}
+                                           src={star}
+                                           alt={"star"}/>)
 
     if (item.date !== false) {
         dateParts = item.date.split("-");
@@ -147,8 +155,9 @@ function Event({
                                 <div style={{paddingTop: ".5em"}}>Munros Walked
                                     ({items.filter(item => item.type === 'munro').length}):&nbsp;
                                     {items.filter(item => item.type === 'munro').map((item, index) => <span key={index}
-                                        className={eventStyles.munro_item}><Link onClick={() => munroContext(item)}
-                                                                                 to={"/map"}>{item.name}</Link></span>)}</div>
+                                                                                                            className={eventStyles.munro_item}><Link
+                                        onClick={() => munroContext(item)}
+                                        to={"/map"}>{item.name}</Link></span>)}</div>
                             }
                             {trip ?
                                 <div style={{
