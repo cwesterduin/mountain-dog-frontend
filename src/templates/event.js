@@ -58,7 +58,6 @@ function Event({
                    }
                }) {
 
-    console.log(media)
 
 
     const id = `event-${item.id}`
