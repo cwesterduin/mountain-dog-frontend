@@ -3,12 +3,13 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 12.3
+      nodejs: 14
     commands:
       - npm install -g gatsby-cli
   pre_build:
     commands:
       - npm install
+      - npm rebuild sharp
   build:
     commands:
       - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
