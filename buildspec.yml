@@ -9,11 +9,10 @@ phases:
   pre_build:
     commands:
       - npm install
-      - npm rebuild sharp
   build:
     commands:
       - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
-      - npm run build
+      - npm run build-legacy
   post_build:
     commands:
       - aws s3 sync public s3://gatsby-src
