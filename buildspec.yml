@@ -11,6 +11,7 @@ phases:
       - npm install
   build:
     commands:
+      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
       - npm run build
   post_build:
     commands:
