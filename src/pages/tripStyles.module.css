@@ -62,7 +62,7 @@
 
 .item_cont_img {
   position:relative;
-
+  object-fit : cover;
 }
 
 .item_cont:hover .item_cont_img {

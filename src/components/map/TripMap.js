@@ -1,11 +1,10 @@
-import React, {Component, useState, useEffect, useRef} from 'react'
-import { Link, navigate } from 'gatsby'
+import React, {useState, useEffect, useRef} from 'react'
+import { navigate } from 'gatsby'
 import * as L from 'leaflet'
-import { Map, TileLayer, Marker, useLeaflet, WMSTileLayer, Polyline, Popup, Tooltip } from "react-leaflet"
+import { Map, TileLayer, Marker, useLeaflet, Tooltip } from "react-leaflet"
 import 'react-leaflet-fullscreen/dist/styles.css'
 
 import leafletMapStyles from "./leafletMapStyles.module.css"
-import { icons } from './icons.js'
 
 import "proj4";
 import "proj4leaflet";
@@ -29,24 +28,19 @@ function fullScreenToggle(e) {
 }
 
 function go(index) {
-  navigate(`/events/${index}`)
+  navigate(`/events/${index}`).then()
 }
 
 function PointMarker(props) {
-  var myIcon = L.divIcon({className: 'html_icon', html:`<div>${props.index}</div>`});
-  const markerRef = useRef(null)
-  useEffect(() => {
-    markerRef.current.leafletElement._icon.classList.add('active')
-  },[])
+  let myIcon = L.divIcon({className: 'html_icon', html:`<div>${props.index}</div>`});
   return (
     <Marker
-    ref={markerRef}
-    position={[props.item.Lat,props.item.Lng]}
+    position={[props.item.mapFeatures[0].coordinate[0],props.item.mapFeatures[0].coordinate[1]]}
     icon={myIcon}
-    onClick={(e) => go(props.item.EventID)}
+    onClick={(e) => go(props.item.id)}
     >
       <Tooltip permanent direction={"bottom"} opacity={"0.8"}>
-        <b>{props.item.EventName}</b>
+        <b>{props.item.name}</b>
       </Tooltip>
     </Marker>
   )
@@ -55,8 +49,9 @@ function PointMarker(props) {
 
 function PointsLayer(props) {
   return (
-    props.mapItems.map((item,index) =>
+    props.mapItems.sort((a, b) => a.date.localeCompare(b.date)).map((item,index) =>
       <PointMarker
+        key={index}
         item={item}
         index={index + 1}
       />
@@ -68,16 +63,14 @@ function Setter(props) {
 
   useEffect(() => {
   if (props.gpx === 'false') {
-    let originLat = props.mapItems[0].Lat
-    let originLng = props.mapItems[0].Lng
-    let originLatTopLeft = [props.mapItems[0].Lat - 0.005, props.mapItems[0].Lng - 0.005]
-    let originLatBottomRight = [props.mapItems[0].Lat + 0.005, props.mapItems[0].Lng + 0.005]
+    let originLatTopLeft = [props.mapItems[0].coordinate[0] - 0.005, props.mapItems[0].coordinate[1] - 0.005]
+    let originLatBottomRight = [props.mapItems[0].coordinate[0] + 0.005, props.mapItems[0].coordinate[1] + 0.005]
     map.fitBounds([originLatTopLeft,originLatBottomRight])
   }
   else {
     map.fitBounds(props.gpx)
   }
-},[props.gpx])
+},[props.gpx, props.mapItems, map])
 
 return null
 
@@ -85,25 +78,13 @@ return null
 
 function LeafletMap(props) {
 
-
-  const [mapItems, setMapItems] = useState([])
-  const [center, setCenter] = useState([0,0])
-
-  const [gpx, setGpx] = useState(props.gpx)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const mapRef = useRef(null);
   const mapContRef = useRef(null);
-
-
   const [crs,setCrs] = useState()
+  const mapFeatures = props.mapItems.map(m => m.mapFeatures).flat()
 
-
-  useEffect(() => {
-    if (props.mapItems[0] === undefined) {}
-    else {
-      setCenter([props.mapItems[0].Lat, props.mapItems[0].Lng])
-    }
-  },[props.mapItems])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -112,33 +93,29 @@ function LeafletMap(props) {
           {
             resolutions: [ 896.0, 448.0, 224.0, 112.0, 56.0, 28.0, 14.0, 7.0, 3.5, 1.75 ],
 
-              origin: [ -238375.0, 1376256.0 ],
-              transformation: L.Transformation(1, 0, -1, 0)
+            origin: [ -238375.0, 1376256.0 ],
+            transformation: L.Transformation(1, 0, -1, 0)
           }
 
-  ))}
-},[])
+      ))
+      setIsLoaded(true)}
+  },[])
 
 
 
-
-     if (typeof window !== 'undefined') {
+     if (typeof window !== 'undefined' && isLoaded) {
       return (
         <div ref={mapContRef} className={leafletMapStyles.container_about}>
-          <button className={leafletMapStyles.container_fullscreen} Style="position:absolute; right: .5em; z-index: 999; width: 34px; height: 34px; border: solid 2px #bbb; border-radius: 5px; top: .5em; background: white; font-weight: bold" onClick={() => fullScreenToggle(mapContRef)}>&#x26F6;</button>
+          <button className={leafletMapStyles.container_fullscreen} onClick={() => fullScreenToggle(mapContRef)}>&#x26F6;</button>
 
           {props.mapItems[0] !== undefined ?
-          <Map ref={mapRef} crs={crs}>
-            {gpx ? <>
-            <Polyline color={'orangered'} positions={gpx}></Polyline>
-            </>
-            : null}
+          <Map ref={mapRef} crs={crs} >
 
             <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Leisure_27700/{z}/{x}/{y}.png?key=6oLE6u9HjlkdNwxYkeTDp8wEa9dBq0cs'/>
 
-            <Setter mapItems={props.mapItems} gpx={gpx ? gpx : props.mapItems.length > 1 ? props.mapItems.map(a => [a.Lat,a.Lng]) : 'false'} />
+            <Setter mapItems={props.mapItems} gpx={mapFeatures.length > 1 ? mapFeatures.map(a => [a.coordinate[0],a.coordinate[1]]) : 'false'} />
 
-            <PointsLayer mapItems={props.mapItems}/>
+            <PointsLayer mapItems={props.mapItems} events={props.events}/>
             {/* Map code goes here */}
           </Map>
           : <div className={leafletMapStyles.leaflet_container_loading} Style={"background: #ddd"}>loading...</div>

@@ -1,18 +1,17 @@
 import React from 'react'
 import headStyles from "./headStyles.module.css"
-import Nav from './Nav'
 import { Link } from "gatsby"
 import logo from '../../../static/logo.svg'
 
 import { myContext } from '../PageContext';
 
-function Head(props) {
+function Head() {
   return (
     <myContext.Consumer>
     {context => (
     <>
       <div className={headStyles.title_cont}>
-        <Link className={headStyles.logo_cont} to="/"><img className={headStyles.logo} src={logo}/></Link>
+        <Link className={headStyles.logo_cont} to="/"><img alt={"logo"} className={headStyles.logo} src={logo}/></Link>
         <Link to="/"><h1 className={headStyles.title}>mountain dog</h1></Link>
       </div>
       {/*<Link Style={props.map ? 'display:none' : null} className={headStyles.map_link} to="/map">map</Link>*/}

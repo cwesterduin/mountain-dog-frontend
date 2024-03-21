@@ -1,145 +1,128 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Image from '../Image'
-import { Link } from 'gatsby'
-import { useImageZoom } from 'react-medium-image-zoom'
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'gatsby';
+import { useImageZoom } from 'react-medium-image-zoom';
+import leafletMapStyles from "./leafletMapStyles.module.css";
+import exclamation from '../../../static/exclamation.svg';
+import { makeDate } from '../../helpers/date.js';
+import Image from "../Image";
+import tripStyles from "../../pages/tripStyles.module.css";
 
-import leafletMapStyles from "./leafletMapStyles.module.css"
-
-import info from '../../../static/info.svg'
-import search from '../../../static/search.svg'
-import exclamation from '../../../static/exclamation.svg'
-
-
-
-
-function Popover(props) {
-  const [active, setActive] = useState(false)
-
-  const popoverRef = useRef(null)
-
-  function ordinal_suffix_of(i) {
-   var j = i % 10,
-       k = i % 100;
-   if (j == 1 && k != 11) {
-       return i + "st";
-   }
-   if (j == 2 && k != 12) {
-       return i + "nd";
-   }
-   if (j == 3 && k != 13) {
-       return i + "rd";
-   }
-   return i + "th";
- }
-
-  function makeDate(e) {
-    const monthNames = ["Jan", "Feb", "March", "April", "May","June","July", "Aug", "Sept", "Oct", "Nov","Dec"];
-     let dateParts
-     dateParts = e.split("-");
-     let jsDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
-     jsDate =  `${ordinal_suffix_of(jsDate.getDate())} ${monthNames[jsDate.getMonth()]} ${jsDate.getFullYear()}`
-     return jsDate
-   }
-
-  let extra, primary = false
-  if (props.extraItems) {
-    primary = props.extraItems.filter(ex => ex.MapFeatureID === props.item.MapFeatureID).filter(ex => ex.EventID === props.item.EventID).map(
-      (ex,index) =>
-      <>
-          <div Style="width:auto" className={leafletMapStyles.popover_extra}><Link to={`/events/${ex.EventID}`}>{ex.EventName}</Link>
-          <span className={leafletMapStyles.popover_extra}>&nbsp;- {makeDate(ex.Date)}</span>
-          </div>
-        {ex.TripID ?
-          <div className={`${leafletMapStyles.popover_extra} ${leafletMapStyles.popover_extra_trip}`}><Link to={`/trips/${ex.TripID}`}><span className={leafletMapStyles.popover_extra_sub}> {ex.TripName}
-            </span></Link>
-          </div>
-        : null}
-      </>
-    )
-  }
-  if (props.extraItems) {
-    extra = props.extraItems.filter(ex => ex.MapFeatureID === props.item.MapFeatureID).filter(ex => ex.EventID !== props.item.EventID).map(
-      (ex,index) =>
-      <>
-      <div Style="width:auto" className={leafletMapStyles.popover_extra}><Link to={`/events/${ex.EventID}`}>{ex.EventName}</Link>
-      <span className={leafletMapStyles.popover_extra}>&nbsp;- {makeDate(ex.Date)}</span>
-          </div>
-        {ex.TripID ?
-          <div className={`${leafletMapStyles.popover_extra} ${leafletMapStyles.popover_extra_trip}`}><Link to={`/trips/${ex.TripID}`}><span className={leafletMapStyles.popover_extra_sub}> {ex.TripName}
-            </span></Link>
-          </div>
-        : null }
-      </>
-    )
-  }
-
-  const { ref } = useImageZoom({ zoomMargin: 24})
-
-  useEffect(() => {
-    props.item !== undefined ? setActive(true) : setActive(false)
-    popoverRef.current.scrollTop = 0;
-  },[props.item])
-  return (
-    <div  ref={popoverRef} Style={active && props.closing ? 'transform:translateX(100%); transition-delay: 1s' : active && !props.closing ? 'transform:translateX(0)' : null} className={leafletMapStyles.popover_cont}>
-      <div className={leafletMapStyles.popover_header}>
-        <button className={leafletMapStyles.popover_cont_close} onClick={props.close}>&times;</button>
-      </div>
-      <div ref={ref} className={`${leafletMapStyles.popover_image_cont}`}>
-        <Image filename={props.item.Path} />
-      </div>
-      <div className={leafletMapStyles.popover_title_cont}>
-        <div className={leafletMapStyles.popover_title}><h1>{props.item.Name}</h1> {props.item.Height ? <span className={leafletMapStyles.popover_height}>{` ${props.item.Height}m`}</span> : null }</div>
-        {props.item.MunroOrder ? <div className={leafletMapStyles.popover_subtitle}>{`Alfie's Munro ${props.item.MunroOrder}/282`}</div> : null }
-      </div>
-
-      <div className={leafletMapStyles.popover_trip_item}>
-      { props.item.EventID === null ?
-        <div Style="display:flex; flex-flow: row wrap; justify-content:center; border-bottom: 0.1em solid rgba(14, 30, 37, 0.055);">
-          <div Style="display:flex; flex-direction: column; padding: 1em">
-            <img Style="height:1.5em;" src={exclamation}/>
-            <span Style="font-size:1em">no details yet...</span>
-          </div>
-        </div>
-        :
+function EventDetails({ event }) {
+    return (
         <>
-        {/*<div Style="display:flex; flex-flow: row wrap; justify-content:center;">
-          <Link to={`/events/${props.item.EventID}`}>
-            <div Style="display:flex; flex-direction: column; padding: 1em">
-            <img Style="height:1.5em;" src={info}/>
-            <span Style="font-size:.75em">{props.item.Type} details</span>
+            <div style={{ width: 'auto' }} className={leafletMapStyles.popover_extra}>
+                <Link to={`/events/${event.id}`}>{event.name}</Link>
+                <span className={leafletMapStyles.popover_extra}>&nbsp;- {makeDate(event.date)}</span>
             </div>
-          </Link>
-            <div Style="display:flex; flex-direction: column; padding: 1em">
-            <img Style="height:1.5em;" src={search}/>
-            <span Style="font-size:.75em">search site</span>
-            </div>
-        </div>*/}
-        {(props.extraItems.filter(ex => ex.MapFeatureID === props.item.MapFeatureID)).length > 0 ?
-        <div className={leafletMapStyles.popover_extra_cont}>
-        <div className={leafletMapStyles.popover_sub_title}>{props.item.Type === 'munro' ? 'Details' : 'Details'}</div>
-          {primary}
-        {(props.extraItems.filter(ex => ex.MapFeatureID === props.item.MapFeatureID).filter(ex => ex.EventID !== props.item.EventID)).length > 0 ?
-          <div className={leafletMapStyles.popover_sub_title}></div> : null}
-          {extra}
-        </div>
-        :
-        null}
+            {event.trip_id ? (
+                <div className={`${leafletMapStyles.popover_extra} ${leafletMapStyles.popover_extra_trip}`}>
+                    <Link to={`/trips/${event.trip_id}`}>
+                        <span className={leafletMapStyles.popover_extra_sub}> {event.trip_name}</span>
+                    </Link>
+                </div>
+            ) : null}
         </>
-      }
-
-      {props.item.Translation || props.item.Translation ?
-      <div className={leafletMapStyles.popover_additional_info}>
-      <div className={leafletMapStyles.popover_sub_title}>Info</div>
-      {props.item.Translation ? <div className={leafletMapStyles.popover_additional_info_text}>Translation: {props.item.Translation}</div> : null }
-      {props.item.Pronunciation ? <div className={leafletMapStyles.popover_additional_info_text}>Pronunciation: {props.item.Pronunciation}</div> : null }
-      </div>
-      :null}
-
-      </div>
-
-
-    </div>
-  )
+    );
 }
 
-export default Popover
+function Popover(props) {
+    const [active, setActive] = useState(false);
+    const popoverRef = useRef(null);
+    const { ref } = useImageZoom({ zoomMargin: 24 });
+
+    useEffect(() => {
+        setActive(props.item !== undefined);
+        popoverRef.current.scrollTop = 0;
+    }, [props.item]);
+
+    return (
+        <div
+            ref={popoverRef}
+            style={
+                active
+                    ? {
+                        transform: props.closing ? 'translateX(100%)' : 'translateX(0)',
+                        transitionDelay: props.closing ? '1s' : '0s',
+                    }
+                    : null
+            }
+            className={leafletMapStyles.popover_cont}
+        >
+            <div className={leafletMapStyles.popover_header}>
+                <button className={leafletMapStyles.popover_cont_close} onClick={props.close}>
+                    &times;
+                </button>
+            </div>
+            <div ref={ref} className={`${leafletMapStyles.popover_image_cont}`}>
+
+                <Image
+                    className={tripStyles.item_cont_img}
+                    imgStyle = {{
+                        objectFit : 'cover'
+                    }}
+                    filename={props.item.path ? (props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length)) : "Favourites/test.png"}
+                />
+            </div>
+            <div className={leafletMapStyles.popover_title_cont}>
+                <div className={leafletMapStyles.popover_title}>
+                    <h1>{props.item.name}</h1>
+                    {props.item.height ? <span className={leafletMapStyles.popover_height}>{` ${props.item.height}m`}</span> : null}
+                </div>
+                {props.item.munro_order ? (
+                    <div className={leafletMapStyles.popover_subtitle}>{`Alfie's Munro ${props.item.munro_order}/282`}</div>
+                ) : null}
+            </div>
+
+            <div className={leafletMapStyles.popover_trip_item}>
+                {!(props.item.events?.[0]?.name) ? (
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexFlow: 'row wrap',
+                            justifyContent: 'center',
+                            borderBottom: '0.1em solid rgba(14, 30, 37, 0.055)',
+                        }}
+                    >
+                        <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>
+                            <img style={{ height: '1.5em' }} src={exclamation} alt="Exclamation" />
+                            <span style={{ fontSize: '1em' }}>no details yet...</span>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {props.item.events.slice(0, 1).map((primaryEvent) => (
+                            <div key={primaryEvent.id} className={leafletMapStyles.popover_extra_cont}>
+                                <div className={leafletMapStyles.popover_sub_title}>Details</div>
+                                <EventDetails event={primaryEvent} />
+                                {props.item.events.slice(1).length > 0 ? (
+                                    <div className={leafletMapStyles.popover_sub_title}></div>
+                                ) : null}
+                                {props.item.events.slice(1).map((extraEvent) => (
+                                    <EventDetails key={extraEvent.id} event={extraEvent} />
+                                ))}
+                            </div>
+                        ))}
+                    </>
+                )}
+
+                {props.item.translation || props.item.pronunciation ? (
+                    <div className={leafletMapStyles.popover_additional_info}>
+                        <div className={leafletMapStyles.popover_sub_title}>Info</div>
+                        {props.item.translation ? (
+                            <div className={leafletMapStyles.popover_additional_info_text}>
+                                Translation: {props.item.translation}
+                            </div>
+                        ) : null}
+                        {props.item.pronunciation ? (
+                            <div className={leafletMapStyles.popover_additional_info_text}>
+                                Pronunciation: {props.item.pronunciation}
+                            </div>
+                        ) : null}
+                    </div>
+                ) : null}
+            </div>
+        </div>
+    );
+}
+
+export default Popover;

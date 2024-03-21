@@ -1,8 +1,6 @@
 import React from "react"
 import Layout from '../components/layout'
 import Image from '../components/Image'
-import pageStyles from "./pageStyles.module.css"
-
 
 export default function Blog() {
   return (

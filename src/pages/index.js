@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
 import Layout from '../components/layout'
-import SlideShow from '../components/SlideShow'
 import GridImage from '../components/GridImage'
 import Image from '../components/Image'
 import Div100vh from 'react-div-100vh'
@@ -12,7 +11,6 @@ export default function Home() {
   return (
     <Layout>
 
-    {/* <SlideShow/> */}
     <Div100vh>
     <div className="contB">
     <div className="imageContB">
@@ -22,7 +20,7 @@ export default function Home() {
           objectFit: "cover",
           objectPosition: "40% 35%"
       }}
-      filename={'Favourites/test.png'}
+      filename={'cover.png'}
     />
     </div>
     </div>
@@ -47,15 +45,18 @@ export default function Home() {
 
               <p>And enjoy Alfie’s <Link to={"/events/top"}>Favourites page</Link> to see the adventures that we have had along the way.</p>
 
-                <div Style={"margin:0 auto; min-width: 80%"} className={eventStyles.image_big_cont}>
-                  <GridImage Path={'Favourites/Alfie_Portrait.jpeg'} />
+                <div style={{margin: "0 auto", minWidth: "80%"}} className={eventStyles.image_big_cont}>
+                  <Image
+                      style={{position:"default"}}
+                      imgStyle = {{
+                      }}
+                      filename={'Favourites/Alfie_Portrait.jpeg'}
+                  />
                 </div>
-                <p Style={"text-align:center; margin:1em 0 "}>Alfie's portrait</p>
+                <p style={{textAlign:"center", margin:"1em 0"}}>Alfie's portrait</p>
             </div>
           </div>
-
-          {/*<SlideShow/>*/}
-          </div>
+         </div>
       </div>
 
     </Layout>

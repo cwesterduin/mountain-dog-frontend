@@ -22,8 +22,19 @@
     width: 90%;
     height: 50vw;
   }
+
   .container_fullscreen {
     display: none;
+    position: absolute;
+    right: .5em;
+    z-index: 999;
+    width: 34px;
+    height: 34px;
+    border: solid 2px #bbb;
+    border-radius: 5px;
+    top: .5em;
+    background: white;
+    font-weight: bold
   }
 }
 

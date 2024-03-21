@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'gatsby'
+import React from 'react'
 import Layout from '../components/layout'
 import pageStyles from "../pages/pageStyles.module.css"
 import GridImage from '../components/GridImage'

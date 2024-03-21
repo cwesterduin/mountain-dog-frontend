@@ -4,7 +4,7 @@ export const myContext = React.createContext();
 
 const Provider = props => {
   const [referringFeature, setReferringFeature] = useState(false);
-  const [referringFilter, setReferringFilter] = useState([]);
+  const [referringFilter, setReferringFilter] = useState(["munro"]);
 
 
   return (
