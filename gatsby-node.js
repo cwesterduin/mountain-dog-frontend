@@ -1,7 +1,7 @@
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`
 });
-const url = "http://localhost:8080/"
+const url = "https://mountain-spring.herokuapp.com/"
 
 let eventTypes = ['munro','corbett','swim','kayak','bike','walk']
 
