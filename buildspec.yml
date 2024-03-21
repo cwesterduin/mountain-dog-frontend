@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 20
+      nodejs: 12.3
     commands:
       - npm install -g gatsby-cli
   pre_build:
