@@ -9,6 +9,7 @@ phases:
   pre_build:
     commands:
       - npm install
+      - npm rebuild sharp
   build:
     commands:
       - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
