@@ -2,6 +2,7 @@ version: 0.2
 env:
   variables:
     NODE_OPTIONS: "--openssl-legacy-provider"
+    SHARP_IGNORE_GLOBAL_LIBVIPS: true
 phases:
   install:
     runtime-versions:
