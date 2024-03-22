@@ -5,7 +5,7 @@ phases:
       nodejs: 20
     commands:
       - n 16.0.0
-      - npm install -g gatsby-cli
+      - npm i gatsby-cli@4.20.0-mdxv4-rc.65
   pre_build:
     commands:
       - node --version
