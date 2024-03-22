@@ -11,7 +11,7 @@ phases:
       - SHARP_IGNORE_GLOBAL_LIBVIPS=true && npm install
   build:
     commands:
-      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
+#      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
       - npm run build-legacy
   post_build:
     commands:
