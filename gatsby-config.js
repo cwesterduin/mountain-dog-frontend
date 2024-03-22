@@ -26,6 +26,12 @@ module.exports = {
             },
         },
         {
+            resolve: "gatsby-plugin-sharp",
+            options: {
+                failOnError: false
+            }
+        },
+        {
             resolve: `gatsby-plugin-manifest`,
             options: {
                 name: "Mountain Dog",
@@ -43,7 +49,6 @@ module.exports = {
                 crossOrigin: `use-credentials`,
             },
         },
-        `gatsby-plugin-sharp`,
         `gatsby-transformer-sharp`,
         `gatsby-plugin-react-helmet`,
     ],
