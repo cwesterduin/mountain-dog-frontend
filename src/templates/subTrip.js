@@ -26,7 +26,7 @@ function Item(props) {
 function SubTrip({pageContext: {filterTrips}}) {
 
 const munroList = filterTrips.map((subItem, index) =>
-  <Item key={index} to={subItem.id} text={`${subItem.name}`} desc={subItem.description} filename={subItem.primaryImage ?  subItem.primaryImage.path : 'images/Favourites/test.png'}/>
+  <Item key={index} to={subItem.id} text={`${subItem.name}`} desc={subItem.description} filename={subItem.primaryImage ?  subItem.primaryImage.path : 'images/test.png'}/>
 )
 
 return (

@@ -50,7 +50,7 @@ export default function Home() {
                       style={{position:"default"}}
                       imgStyle = {{
                       }}
-                      filename={'Favourites/Alfie_Portrait.jpeg'}
+                      filename={'Alfie_Portrait.jpeg'}
                   />
                 </div>
                 <p style={{textAlign:"center", margin:"1em 0"}}>Alfie's portrait</p>

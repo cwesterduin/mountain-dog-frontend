@@ -17,10 +17,16 @@ phases:
       - npm cache clean --force
       - npm rebuild --verbose sharp
       - npm install
-      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
+#      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
   build:
     commands:
       - npm run build
   post_build:
     commands:
       - aws s3 sync public s3://gatsby-src
+
+cache:
+  paths:
+    - node_modules/
+    - ~/.npm
+    - images/

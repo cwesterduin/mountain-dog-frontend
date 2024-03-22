@@ -60,7 +60,7 @@ function Popover(props) {
                     imgStyle = {{
                         objectFit : 'cover'
                     }}
-                    filename={props.item.path ? (props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length)) : "Favourites/test.png"}
+                    filename={props.item.path ? (props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length)) : "test.png"}
                 />
             </div>
             <div className={leafletMapStyles.popover_title_cont}>
