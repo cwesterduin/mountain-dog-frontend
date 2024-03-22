@@ -1,11 +1,14 @@
 version: 0.2
+env:
+  variables:
+    NODE_OPTIONS: "--openssl-legacy-provider"
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
-      - n 16.0.0
-      - npm i gatsby-cli@4.20.0-mdxv4-rc.65
+      - n 20.11.1
+      - npm install -g gatsby-cli
   pre_build:
     commands:
       - node --version
@@ -17,7 +20,7 @@ phases:
 #      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
   build:
     commands:
-      - npm run build-legacy
+      - npm run build
   post_build:
     commands:
       - aws s3 sync public s3://gatsby-src
