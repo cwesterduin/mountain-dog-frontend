@@ -9,7 +9,7 @@ phases:
       nodejs: 20
     commands:
       - n 20.11.1
-      - npm install -g gatsby-cli
+      - npm install -g gatsby-cli@4.20.0
   pre_build:
     commands:
       - node --version
