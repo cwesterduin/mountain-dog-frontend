@@ -8,10 +8,14 @@ phases:
       - npm install -g gatsby-cli
   pre_build:
     commands:
-      - SHARP_IGNORE_GLOBAL_LIBVIPS=true && npm install
+      - rm -rf node_modules
+      - rm -f package-lock.json
+      - npm cache clean --force
+      - npm rebuild --verbose sharp
+      - npm install
+      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
   build:
     commands:
-#      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
       - npm run build-legacy
   post_build:
     commands:
