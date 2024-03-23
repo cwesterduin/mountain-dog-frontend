@@ -27,7 +27,7 @@ function Item(props) {
 function SubEvent({pageContext: {item}}) {
     const munroList = item.map((subItem, index) =>
         <Item key={index} to={subItem.id} text={`${
-            subItem.name}`} desc={subItem.description} filename={subItem.path ? subItem.path : 'images/Favourites/test.png'}/>
+            subItem.name}`} desc={subItem.description} filename={subItem.path ? subItem.path : 'images/test.png'}/>
     )
 
         return (
