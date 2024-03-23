@@ -19,7 +19,7 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 sync public s3://gatsby-src
+      - aws s3 sync public s3://mountain-dog.co.uk
 
 cache:
   paths:
