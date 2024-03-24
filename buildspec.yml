@@ -13,15 +13,15 @@ phases:
   pre_build:
     commands:
       - npm install
-      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
+#      - aws s3 sync s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4"
   build:
     commands:
       - npm run build
   post_build:
     commands:
-      - aws s3 rm s3://mountain-dog.co.uk --recursive
-      - aws s3 sync public s3://mountain-dog.co.uk
-
+#      - aws s3 rm s3://mountain-dog.co.uk --recursive
+#      - aws s3 sync public s3://mountain-dog.co.uk
+      - aws cloudfront create-invalidation --distribution-id E3RXWJELGM9KA0 --paths "/*"
 cache:
   paths:
     - node_modules/
