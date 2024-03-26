@@ -2,22 +2,15 @@ import React from 'react'
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import TripMap from '../components/map/TripMap'
-import eventStyles from './eventStyles.module.css'
-import pageStyles from "../pages/pageStyles.module.css"
+import * as eventStyles from './eventStyles.module.css'
+import * as pageStyles from "../pages/pageStyles.module.css"
 import { ordinal_suffix_of } from "../helpers/date.js"
-
-import { DiscussionEmbed } from "disqus-react"
-
 
 function Event({pageContext: {item, mapItems}}) {
     const mapFeatures = mapItems.map(m => m.mapFeatures).flat()
 
 
   const id = `trip${item.TripID}`
-  const disqusConfig = {
-    shortname: 'mountain-dog',
-    config: { identifier: id },
-  }
 
 
   let jsDate = false
@@ -103,7 +96,6 @@ function Event({pageContext: {item, mapItems}}) {
         </div>
         </div>
 
-        <div className={eventStyles.comment_cont}><DiscussionEmbed {...disqusConfig} /></div>
     </div>
 
     </Layout>

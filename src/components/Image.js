@@ -1,52 +1,56 @@
 import React from "react"
-import Img from "gatsby-image"
+import {GatsbyImage, getImage} from "gatsby-plugin-image"
 import {useStaticQuery, graphql} from "gatsby"
-import {useImageZoom} from "react-medium-image-zoom";
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css'
 
 function Image(props) {
-
-    const {filename, type = 'default', alt, imgStyle, style, className} = props;
-    const {ref} = useImageZoom({zoomMargin: 24})
+    const {filename, type = 'default', alt, imgStyle, style, className, objectPosition, zoomable} = props;
 
     const images = useStaticQuery(graphql`
-    query ImageQuery {
-      data: allFile {
-        edges {
-          node {
-            relativePath
-            default: childImageSharp {
-              fluid(quality:80) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
+        query ImageQuery {
+            allFile {
+                nodes {
+                    relativePath
+                    childImageSharp {
+                        gatsbyImageData(quality: 80, layout: FULL_WIDTH)
+                    }
+                }
             }
-
-          }
         }
-      }
-    }
-  `);
+    `);
 
-    const image = images.data.edges.find(n => {
-        return n.node.relativePath.includes(filename);
-    });
+    const image = images.allFile.nodes.find(node => node.relativePath.includes(filename));
 
     if (!image) {
         return null;
     }
 
+    const imageData = getImage(image);
 
     return (
-        <div ref={ref}>
-            <Img loading="lazy"
-                 className={className}
-                 alt={alt}
-                 style={style}
-                 imgStyle={imgStyle}
-                 fluid={{
-                     ...image.node[type].fluid,
-                 }}/>
-        </div>
-    )
+        zoomable ? (
+            <Zoom>
+                <GatsbyImage
+                    loading="lazy"
+                    className={className}
+                    alt={alt ? alt : ""}
+                    style={style}
+                    imgStyle={imgStyle}
+                    image={imageData}
+                />
+            </Zoom>
+        ) : (
+            <GatsbyImage
+                loading="lazy"
+                className={className}
+                alt={alt ? alt : ""}
+                style={style}
+                imgStyle={imgStyle}
+                image={imageData}
+            />
+        )
+    );
 }
 
-export default Image
+export default Image;

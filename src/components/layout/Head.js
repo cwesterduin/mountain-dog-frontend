@@ -1,5 +1,5 @@
 import React from 'react'
-import headStyles from "./headStyles.module.css"
+import * as headStyles from "./headStyles.module.css"
 import { Link } from "gatsby"
 import logo from '../../../static/logo.svg'
 

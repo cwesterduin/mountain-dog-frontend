@@ -1,33 +1,36 @@
 import React from "react"
 import { Link } from "gatsby"
 import Layout from '../components/layout'
-import GridImage from '../components/GridImage'
 import Image from '../components/Image'
 import Div100vh from 'react-div-100vh'
-import pageStyles from "./pageStyles.module.css"
-import eventStyles from "../templates/eventStyles.module.css"
+import * as pageStyles from "./pageStyles.module.css"
+import * as eventStyles from "../templates/eventStyles.module.css"
 
 export default function Home() {
   return (
-    <Layout>
+      <Layout>
 
-    <Div100vh>
-    <div className="contB">
-    <div className="imageContB">
-    <Image
-      style={{position:"default"}}
-      imgStyle = {{
-          objectFit: "cover",
-          objectPosition: "40% 35%"
-      }}
-      filename={'cover.png'}
-    />
-    </div>
-    </div>
-    </Div100vh>
+          <Div100vh>
 
-      <div className={`${pageStyles.content} ${pageStyles.index_content}`}>
-        <div className={pageStyles.content_inner}>
+                      <Image
+                          style={{
+                              position: "relative",
+                              height: "calc(100vh - 10rem)",
+                              overflow: "hidden"
+
+                          }}
+                          imgStyle={{
+                              position: "absolute",
+                              objectFit: "cover",
+                              objectPosition: "45% 35%",
+                              top: 0,
+                              left: 0
+                          }}
+                          filename={'cover.png'}
+                      />
+          </Div100vh>
+
+          <div className={`${pageStyles.content} ${pageStyles.index_content}`}>
 
           <div className={pageStyles.text_block}>
             <div id="about" className={pageStyles.text_block_title_cont}>
@@ -45,20 +48,20 @@ export default function Home() {
 
               <p>And enjoy Alfie’s <Link to={"/events/top"}>Favourites page</Link> to see the adventures that we have had along the way.</p>
 
-                <div style={{margin: "0 auto", minWidth: "80%"}} className={eventStyles.image_big_cont}>
-                  <Image
-                      style={{position:"default"}}
-                      imgStyle = {{
-                      }}
-                      filename={'Alfie_Portrait.jpeg'}
-                  />
-                </div>
-                <p style={{textAlign:"center", margin:"1em 0"}}>Alfie's portrait</p>
+              <div style={{margin: "0 auto", minWidth: "80%"}} className={eventStyles.image_big_cont}>
+                <Image
+                    zoomable={true}
+                    style={{position:"default"}}
+                    imgStyle = {{
+                    }}
+                    filename={'Alfie_Portrait.jpeg'}
+                />
+              </div>
+              <p style={{textAlign:"center", margin:"1em 0"}}>Alfie's portrait</p>
             </div>
           </div>
-         </div>
-      </div>
+        </div>
 
-    </Layout>
+      </Layout>
   )
 }

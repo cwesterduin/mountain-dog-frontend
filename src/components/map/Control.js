@@ -1,4 +1,4 @@
-import { useLeaflet } from "react-leaflet";
+import { useMap as useLeaflet } from "react-leaflet";
 import L from "leaflet";
 import React, { useEffect } from "react";
 import ReactDOM from 'react-dom'

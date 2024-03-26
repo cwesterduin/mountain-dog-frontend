@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import Image from '../components/Image'
-import pageStyles from "../pages/pageStyles.module.css"
-import tripStyles from "../pages/tripStyles.module.css"
+import * as pageStyles from "../pages/pageStyles.module.css"
+import * as tripStyles from "../pages/tripStyles.module.css"
 
 function Item(props) {
   const [hover, setHover] = useState(false)
