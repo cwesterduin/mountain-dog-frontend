@@ -8,14 +8,14 @@ phases:
   pre_build:
     commands:
       - npm install --legacy-peer-deps
-      - aws s3 cp s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4" --recursive
+      - aws s3 cp s3://alfie76589/images ./images --exclude="*.gpx" --exclude="*.mp4" --recursive --only-show-errors --no-progress
   build:
     commands:
       - npm run build
   post_build:
     commands:
-      - aws s3 rm s3://mountain-dog.co.uk --recursive
-      - aws s3 cp public s3://mountain-dog.co.uk -recursive
+      - aws s3 rm s3://mountain-dog.co.uk --recursive --only-show-errors --no-progress
+      - aws s3 cp public s3://mountain-dog.co.uk --recursive --only-show-errors --no-progress
       - aws cloudfront create-invalidation --distribution-id E3RXWJELGM9KA0 --paths "/*"
 cache:
   paths:
