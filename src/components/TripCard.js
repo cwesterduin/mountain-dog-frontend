@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from './Image.js'
-import tripStyles from "../pages/tripStyles.module.css"
+import * as tripStyles from "../pages/tripStyles.module.css"
 import {Link} from 'gatsby'
 
 

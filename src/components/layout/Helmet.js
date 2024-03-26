@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet'
+import React from "react";
 
 function MyHelmet() {
     return (
@@ -13,10 +14,9 @@ function MyHelmet() {
             <link rel="canonical" href=""/>
             <meta property="og:title" content=""/>
             <meta property="og:description" content=""/>
-
         </Helmet>
     )
 }
 
-  export default MyHelmet;
+export default MyHelmet;
 

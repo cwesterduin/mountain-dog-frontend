@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import headStyles from "./headStyles.module.css"
+import * as headStyles from "./headStyles.module.css"
 import { Link } from "gatsby"
 import menu from '../../../static/bars-solid.svg'
 

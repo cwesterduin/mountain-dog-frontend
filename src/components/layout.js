@@ -1,5 +1,5 @@
 import React from 'react'
-import "./layout.css"
+import * as styles from "./layout.css"
 
 import Head from './layout/Head'
 

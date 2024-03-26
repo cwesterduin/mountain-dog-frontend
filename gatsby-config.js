@@ -6,13 +6,7 @@
 
 module.exports = {
     plugins: [
-
         {
-            resolve: `gatsby-plugin-s3`,
-            options: {
-                bucketName: "mountain-dog.co.uk",
-            },
-        }, {
             resolve: 'gatsby-plugin-react-leaflet',
             options: {
                 linkStyles: true // (default: true) Enable/disable loading stylesheets via CDN
@@ -28,7 +22,7 @@ module.exports = {
         {
             resolve: "gatsby-plugin-sharp",
             options: {
-                failOnError: false
+                failOn: "none"
             }
         },
         {
@@ -51,5 +45,6 @@ module.exports = {
         },
         `gatsby-transformer-sharp`,
         `gatsby-plugin-react-helmet`,
+        `gatsby-plugin-image`
     ],
 }

@@ -4,17 +4,15 @@ import Layout from '../components/layout'
 
 import AboutMap from '../components/map/AboutMap'
 
-import eventStyles from "./eventStyles.module.css"
-import pageStyles from "../pages/pageStyles.module.css"
+import * as eventStyles from "./eventStyles.module.css"
+import * as pageStyles from "../pages/pageStyles.module.css"
 
 import star from '../../static/star.svg'
-
-import {DiscussionEmbed} from "disqus-react"
 
 import {myContext} from '../components/PageContext';
 import * as L from "leaflet";
 import Image from "../components/Image";
-import tripStyles from "../pages/tripStyles.module.css";
+import * as tripStyles from "../pages/tripStyles.module.css";
 import {ordinal_suffix_of} from "../helpers/date";
 
 
@@ -61,10 +59,6 @@ function Event({
 
 
     const id = `event-${item.id}`
-    const disqusConfig = {
-        shortname: 'mountain-dog',
-        config: {identifier: id},
-    }
 
     const images = media
         .sort((a, b) => (a.sortOrder > b.sortOrder) ? 1 : ((b.sortOrder > a.sortOrder) ? -1 : 0))
@@ -72,6 +66,7 @@ function Event({
                 if (item.fileType === "image") {
                     return <div key={index} className={eventStyles.image_big_cont}>
                         <Image
+                            zoomable={true}
                             className={tripStyles.item_cont_img}
                             imgStyle={{
                                 objectFit: 'cover'
@@ -234,7 +229,6 @@ function Event({
                 <div className={eventStyles.imageTopCont}>
                     {images}
                 </div>
-                <div className={eventStyles.comment_cont}><DiscussionEmbed {...disqusConfig} /></div>
             </div>
         </Layout>
     )

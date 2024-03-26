@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'gatsby';
-import { useImageZoom } from 'react-medium-image-zoom';
-import leafletMapStyles from "./leafletMapStyles.module.css";
+import Zoom from 'react-medium-image-zoom';
 import exclamation from '../../../static/exclamation.svg';
 import { makeDate } from '../../helpers/date.js';
+import * as leafletMapStyles from './leafletMapStyles.module.css';
+import * as tripStyles from '../../pages/tripStyles.module.css';
 import Image from "../Image";
-import tripStyles from "../../pages/tripStyles.module.css";
 
 function EventDetails({ event }) {
     return (
@@ -28,11 +28,12 @@ function EventDetails({ event }) {
 function Popover(props) {
     const [active, setActive] = useState(false);
     const popoverRef = useRef(null);
-    const { ref } = useImageZoom({ zoomMargin: 24 });
 
     useEffect(() => {
         setActive(props.item !== undefined);
-        popoverRef.current.scrollTop = 0;
+        if (popoverRef.current) {
+            popoverRef.current.scrollTop = 0;
+        }
     }, [props.item]);
 
     return (
@@ -53,16 +54,12 @@ function Popover(props) {
                     &times;
                 </button>
             </div>
-            <div ref={ref} className={`${leafletMapStyles.popover_image_cont}`}>
-
-                <Image
+            <Image
+                    zoomable={true}
                     className={tripStyles.item_cont_img}
-                    imgStyle = {{
-                        objectFit : 'cover'
-                    }}
-                    filename={props.item.path ? (props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length)) : "test.png"}
-                />
-            </div>
+                    filename={props.item.path ? props.item.path.substring(props.item.path.indexOf('/images/') + '/images/'.length) : 'test.png'}
+                    alt={props.item.name}
+            />
             <div className={leafletMapStyles.popover_title_cont}>
                 <div className={leafletMapStyles.popover_title}>
                     <h1>{props.item.name}</h1>
@@ -72,9 +69,8 @@ function Popover(props) {
                     <div className={leafletMapStyles.popover_subtitle}>{`Alfie's Munro ${props.item.munro_order}/282`}</div>
                 ) : null}
             </div>
-
             <div className={leafletMapStyles.popover_trip_item}>
-                {!(props.item.events?.[0]?.name) ? (
+                {!props.item.events?.[0]?.name ? (
                     <div
                         style={{
                             display: 'flex',
@@ -104,19 +100,14 @@ function Popover(props) {
                         ))}
                     </>
                 )}
-
                 {props.item.translation || props.item.pronunciation ? (
                     <div className={leafletMapStyles.popover_additional_info}>
                         <div className={leafletMapStyles.popover_sub_title}>Info</div>
                         {props.item.translation ? (
-                            <div className={leafletMapStyles.popover_additional_info_text}>
-                                Translation: {props.item.translation}
-                            </div>
+                            <div className={leafletMapStyles.popover_additional_info_text}>Translation: {props.item.translation}</div>
                         ) : null}
                         {props.item.pronunciation ? (
-                            <div className={leafletMapStyles.popover_additional_info_text}>
-                                Pronunciation: {props.item.pronunciation}
-                            </div>
+                            <div className={leafletMapStyles.popover_additional_info_text}>Pronunciation: {props.item.pronunciation}</div>
                         ) : null}
                     </div>
                 ) : null}

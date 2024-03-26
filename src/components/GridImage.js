@@ -1,12 +1,11 @@
 import React from 'react'
-import { useImageZoom } from 'react-medium-image-zoom'
+import Zoom from 'react-medium-image-zoom'
 
-import eventStyles from "../templates/eventStyles.module.css"
+import * as eventStyles from "../templates/eventStyles.module.css"
 
 function GridImage(props) {
-  const { ref } = useImageZoom({ zoomMargin: 24})
   return (
-    <div ref={ref} className={eventStyles.imageCont}>
+    <Zoom>
       <img
         Style = {{
           objectFit : 'scale-down '
@@ -14,7 +13,7 @@ function GridImage(props) {
         src={props.Path}
         alt={""}
       />
-    </div>
+    </Zoom>
   )
 }
 

@@ -1,7 +1,7 @@
 import React from "react"
 import {Link} from "gatsby"
-import pageStyles from "../pages/pageStyles.module.css"
-import headStyles from "../components/layout/headStyles.module.css"
+import * as pageStyles from "../pages/pageStyles.module.css"
+import * as headStyles from "../components/layout/headStyles.module.css"
 import logo from '../../static/logo.svg'
 
 
