@@ -25,19 +25,19 @@ function EventListNumbers(props) {
         return (
             <>
                 {currentIndex === 0 ? <span className={eventStyles.deadLink}>{'< '}</span> :
-                    <Link to={`/events/${prevItem.id}`}>{'<'}</Link>}
+                    <Link to={`/adventures/${prevItem.id}`}>{'<'}</Link>}
                 {
                     sortedTrips.map((a, index) => {
                             return <Link className={eventStyles.event_numbers}
                                          key={index}
                                          style={a.id === props.item.id ? {textDecoration: "underline"} : null}
-                                         to={`/events/${a.id}`}>{index + 1}</Link>
+                                         to={`/adventures/${a.id}`}>{index + 1}</Link>
                         }
                     )
                 }
                 {currentIndex === (props.trip.events.length - 1) ?
                     <span className={eventStyles.deadLink}>{' >'}</span> :
-                    <Link to={`/events/${nextItem.id}`}>{'>'}</Link>}
+                    <Link to={`/adventures/${nextItem.id}`}>{'>'}</Link>}
             </>
         )
     } else {

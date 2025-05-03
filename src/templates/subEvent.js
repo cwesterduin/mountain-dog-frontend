@@ -9,7 +9,7 @@ function Item(props) {
     const [hover, setHover] = useState(false)
     return (
         <Link onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-              to={props.to !== null ? `/events/${props.to}` : null} className={tripStyles.item_cont}
+              to={props.to !== null ? `/adventures/${props.to}` : null} className={tripStyles.item_cont}
               tyle={hover ? {border:"solid .1em #333"} : null}
         >
             <Image

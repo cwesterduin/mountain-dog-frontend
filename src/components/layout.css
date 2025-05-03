@@ -146,8 +146,6 @@ a:hover {
   text-decoration: underline
 }
 
-
-
 .cont:before, .cont:after {
   content: "";
   position:absolute; width: calc(5%); height:100%; background: rgba(0,0,0,0.5); z-index:6;

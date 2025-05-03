@@ -46,8 +46,6 @@ function LeafletMap(props) {
     const mapContRef = useRef(null);
     const mapItems = props.mapItems;
 
-    const [myBounds, setMyBounds] = useState(bounding())
-
     function calculateBounds(mapItems) {
         if (mapItems.length === 0) {
             return null;
@@ -80,7 +78,10 @@ function LeafletMap(props) {
 
     function bounding() {
         if (coordinates) {
-            return coordinates
+            return coordinates.map(([x, y]) => [
+                parseFloat(x.toFixed(2)),
+                parseFloat(y.toFixed(2))
+            ]);
         } else {
             return calculateBounds(mapItems)
         }
@@ -115,12 +116,11 @@ function LeafletMap(props) {
                 &#x26F6;
             </button>
 
-            {/*
-// @ts-ignore */}
+
             <Map
-                bounds={myBounds}
                 ref={mapRef}
                 crs={crs}
+                bounds={bounding()}
             >
                 {coordinates ? (
                     <>

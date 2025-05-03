@@ -31,7 +31,7 @@ function fullScreenToggle(e) {
 
 function go(index) {
     console.log(index)
-    navigate(`/events/${index}`);
+    navigate(`/adventures/${index}`);
 }
 
 function PointMarker({item, index}) {
