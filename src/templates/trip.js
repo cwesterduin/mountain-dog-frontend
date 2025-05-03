@@ -39,7 +39,7 @@ function Event({pageContext: {item, mapItems}}) {
   const events = item.events.sort((a, b) => a.date.localeCompare(b.date)).map((item,index) =>
     <div key={index}>
       <span>Stage {index + 1}: </span>
-      <Link to={`/events/${item.id}`}>{item.name}</Link>
+      <Link to={`/adventures/${item.id}`}>{item.name}</Link>
     </div>
   )
 

@@ -1,0 +1,160 @@
+.container > p {
+    margin-bottom: 2rem; /* Tailwind: mb-8 */
+}
+
+.container > h1,
+.container > h2,
+.container > h3,
+.container > h4,
+.container > h5,
+.container > h6 {
+    padding-top: 0.5rem; /* Tailwind: py-2 */
+    padding-bottom: 0.5rem; /* Tailwind: py-2 */
+}
+
+.container > h1 {
+    font-size: 1.875rem; /* Tailwind: text-3xl */
+}
+
+.container > h2 {
+    font-size: 1.5rem; /* Tailwind: text-2xl */
+    font-weight: 800; /* Tailwind: font-extrabold */
+}
+
+.container > h3 {
+    font-size: 1.25rem; /* Tailwind: text-xl */
+    font-weight: 700; /* Tailwind: font-bold */
+}
+
+.container > h4 {
+    font-size: 1.125rem; /* Tailwind: text-lg */
+}
+
+.container > h5 {
+    font-size: 1rem; /* Tailwind: text-base */
+}
+
+.container > h6 {
+    font-size: 0.875rem; /* Tailwind: text-sm */
+}
+
+/* Center images and videos, set their width to 100% by default, and 50% on medium screens */
+.container img,
+.container > video {
+    margin: 0 auto; /* Tailwind: m-[auto] */
+    height: auto; /* Tailwind: h-[auto] */
+    width: 100%; /* Tailwind: w-[100%] */
+}
+
+@media (min-width: 768px) {
+    .container img,
+    .container > video {
+        width: 50%; /* Tailwind: md:w-[50%] */
+        margin: 0 25%; /* Tailwind: m-[auto] */
+    }
+}
+
+/* Styling links */
+.container a {
+    color: #3b82f6; /* Tailwind: text-blue-500 */
+    text-decoration: underline; /* Tailwind: underline */
+}
+
+.container a:visited {
+    color: #6b21a8; /* Tailwind: text-purple-500 */
+}
+
+/* Styling unordered and ordered lists */
+.container ul {
+    list-style-type: disc; /* Tailwind: list-disc */
+    padding-left: 1.25rem; /* Tailwind: pl-5 */
+    margin-bottom: 2rem; /* Tailwind: mb-8 */
+}
+
+.container ol {
+    list-style-type: decimal; /* Tailwind: list-decimal */
+    padding-left: 1.25rem; /* Tailwind: pl-5 */
+    margin-bottom: 2rem; /* Tailwind: mb-8 */
+}
+
+/* Styling blockquotes */
+.container blockquote {
+    border-left: 4px solid #d1d5db; /* Tailwind: border-l-4, border-gray-300 */
+    padding-left: 1rem; /* Tailwind: pl-4 */
+    font-style: italic; /* Tailwind: italic */
+    color: #4b5563; /* Tailwind: text-gray-600 */
+    margin-bottom: 2rem; /* Tailwind: mb-8 */
+}
+
+/* Styling tables */
+.container > table {
+    width: 100%; /* Tailwind: w-full */
+    text-align: left; /* Tailwind: text-left */
+    border-collapse: collapse; /* Tailwind: border-collapse */
+    margin-bottom: 2rem; /* Tailwind: mb-8 */
+}
+
+.container > table th,
+.container > table td {
+    padding: 0.5rem 1rem; /* Tailwind: px-4, py-2 */
+}
+
+.container > table thead th {
+    border-bottom-width: 2px; /* Tailwind: border-b-2 */
+    border-bottom-color: #d1d5db; /* Tailwind: border-gray-300 */
+    background-color: #f3f4f6; /* Tailwind: bg-gray-100 */
+}
+
+.container > table tbody tr td {
+    border-bottom: 1px solid #e5e7eb; /* Tailwind: border-b, border-gray-200 */
+}
+
+.container > table tbody tr:nth-child(odd) {
+    background-color: #f9fafb; /* Tailwind: bg-gray-50 */
+}
+
+.parent {
+    background: #91adca
+}
+
+.content {
+    padding: 24px;
+    background: #fdfdfd;
+    max-width: 1024px;
+    margin: 0 auto;
+    min-height: calc(100vh - 2em);
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0
+}
+
+.description {
+    margin: .2rem 0;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+}
+
+
+.head h1 a {
+    color: #3760df;
+}

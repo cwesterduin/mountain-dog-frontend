@@ -12,14 +12,14 @@ function Head() {
     <>
       <div className={headStyles.title_cont}>
         <Link className={headStyles.logo_cont} to="/"><img alt={"logo"} className={headStyles.logo} src={logo}/></Link>
-        <Link to="/"><h1 className={headStyles.title}>mountain dog</h1></Link>
+        <Link to="/" className={headStyles.title}>mountain dog</Link>
       </div>
       {/*<Link Style={props.map ? 'display:none' : null} className={headStyles.map_link} to="/map">map</Link>*/}
       {/*<Link Style={props.map ? 'display:none' : null} className={headStyles.map_link} to="/map">Map</Link>*/}
       <div className={headStyles.nav_cont}>
       <Link to={"/map"}>map</Link>
-      <Link to={"/events"}>events</Link>
-      <Link to={"/#about"}>about</Link>
+      <Link to={"/adventures"}>adventures</Link>
+      <Link to={"/blog"}>blog</Link>
       </div>
       {/*<Nav/>*/}
     </>

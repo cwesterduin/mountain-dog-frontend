@@ -1,6 +1,6 @@
 .content_top {
   background: #fffffe;
-  padding: 1em;
+  padding: 0 1em;
   margin: 2em -1em 1em -1em;
   border: .1em solid rgba(14,30,37,.054);
 }
@@ -34,6 +34,7 @@
   width: 100%;
   position: relative;
   display: flex;
+  padding-top: 1rem
 }
 
 .details_numbers {

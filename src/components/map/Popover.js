@@ -11,7 +11,7 @@ function EventDetails({ event }) {
     return (
         <>
             <div style={{ width: 'auto' }} className={leafletMapStyles.popover_extra}>
-                <Link to={`/events/${event.id}`}>{event.name}</Link>
+                <Link to={`/adventures/${event.id}`}>{event.name}</Link>
                 <span className={leafletMapStyles.popover_extra}>&nbsp;- {makeDate(event.date)}</span>
             </div>
             {event.trip_id ? (

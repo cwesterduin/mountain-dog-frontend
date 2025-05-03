@@ -95,6 +95,10 @@ a > .logo {
   border: solid 2px black;
 }
 
+  .logo_cont > a:hover {
+      text-decoration: none !important;
+  }
+
 .spacer {
   flex: 1;
   text-align:right;
@@ -132,13 +136,17 @@ a > .logo {
 }
 
 .title {
-  color: black;
+color: black;
 font-size: 2em;
 letter-spacing: .04em;
 font-weight: 100;
 font-family: "Anton", Charcoal, sans-serif;
 text-transform: uppercase;
-margin-left: .25em
+margin-left: .25em;
+}
+
+.title:hover {
+    text-decoration: none;
 }
 
 @media only screen and (max-width: 30em) {
